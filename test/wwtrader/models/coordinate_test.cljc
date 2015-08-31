@@ -1,4 +1,4 @@
-(ns wwtrader.models.coordinate
+(ns wwtrader.models.coordinate-test
   (:require
     [wwtrader.models.coordinate :as coord]
     #?(:clj [clojure.test :refer [deftest testing is run-tests]]
