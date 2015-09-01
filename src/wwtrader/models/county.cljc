@@ -9,3 +9,15 @@
   [w h]
   (->County w h {}))
 
+(defn register
+  "Registers a new element on a given coordinate"
+  [county coord elem]
+  (let [current-elements (-> county :elements)]
+    (assoc county :elements (assoc current-elements coord elem))))
+
+(defn at
+  "Gets the element, if any, at the given coordinate"
+  [county coord]
+  (-> county
+      :elements
+      (get coord)))
