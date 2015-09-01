@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+lein clean
+lein with-profile clj run
+
+rm -rf build
+lein with-profile cljs-node cljsbuild test
