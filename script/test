@@ -2,3 +2,6 @@
 
 lein clean
 lein with-profile clj run
+
+rm -rd build
+lein with-profile cljs-node cljsbuild test
