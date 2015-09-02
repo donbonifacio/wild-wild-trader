@@ -4,7 +4,8 @@
   (:require [wwtrader.models.element :as e]))
 
 (defrecord Trader [id hitpoints cargo]
-  e/Element)
+  e/Element
+  (id [elem] id))
 
 (defn create
   "Creates a new Trader"

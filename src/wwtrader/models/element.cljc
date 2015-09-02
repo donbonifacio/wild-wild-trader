@@ -2,5 +2,6 @@
   wwtrader.models.element
   "Element represents something that can be placed on the map/county")
 
-(defprotocol Element)
+(defprotocol Element
+  (id [elem] "Gets an unique identifier for this element"))
 
