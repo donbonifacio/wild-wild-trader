@@ -15,6 +15,12 @@
   (let [current-elements (-> county :elements)]
     (assoc county :elements (assoc current-elements coord elem))))
 
+(defn purge
+  "Removes the given element from the game"
+  [county coord elem]
+  (let [current-elements (-> county :elements)]
+    (assoc county :elements (dissoc current-elements coord))))
+
 (defn at
   "Gets the element, if any, at the given coordinate"
   [county coord]

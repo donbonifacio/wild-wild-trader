@@ -18,3 +18,12 @@
   "Handles the y value"
   [coord]
   (:y coord))
+
+(defn offset
+  "Moves the coordinate based on the given offset"
+  [coord [ox oy]]
+  (create (+ (x coord) ox)
+          (+ (y coord) oy)))
+
+(def c0-1 (create 0 1))
+(def c1-1 (create 1 1))

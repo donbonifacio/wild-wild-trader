@@ -11,5 +11,5 @@
   "Gets a 3x3 game with the player at the center"
   []
   (-> (game/create 3 3)
-      (game/register (coord/create 1 1) (trader/create))))
+      (game/register (trader/create coord/c1-1))))
 

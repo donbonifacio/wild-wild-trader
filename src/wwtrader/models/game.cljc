@@ -20,11 +20,29 @@
 
 (defn register
   "Registers a new element on a given coordinate"
-  [game coord elem]
-  (let [current-county (:county game)]
+  [game elem]
+  (let [current-county (:county game)
+        coord (e/coord elem)]
     (assoc game :county (county/register current-county coord elem))))
+
+(defn purge
+  "Removes the given element from the game"
+  [game elem]
+  (let [current-county (:county game)
+        coord (e/coord elem)]
+    (assoc game :county (county/purge current-county coord elem))))
+
+(defn at
+  "Gets the element, if any, at the given coordinate"
+  [game coord]
+  (-> game
+      :county
+      :elements
+      (get coord)))
 
 (defn player-action
   "Sets the player action on the current game"
-  [game player-action]
-  (assoc game :player-action player-action))
+  ([game ]
+   (:player-action game))
+  ([game player-action]
+   (assoc game :player-action player-action)))

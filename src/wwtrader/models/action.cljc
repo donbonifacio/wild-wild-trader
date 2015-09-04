@@ -4,4 +4,4 @@
 
 (defrecord Action [action-type args])
 
-(def left (map->Action {:action-type :left}))
+(def left (map->Action {:action-type :move :offset [-1 0]}))

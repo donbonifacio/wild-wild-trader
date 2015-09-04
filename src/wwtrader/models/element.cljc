@@ -4,5 +4,6 @@
 
 (defprotocol Element
   (id [elem] "Gets an unique identifier for this element")
+  (coord [elem] [elem coord] "Gets/Sets the coordinate of this element")
   (process-turn [elem game] "Processes the turn for this element"))
 
