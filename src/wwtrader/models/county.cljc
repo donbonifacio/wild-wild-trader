@@ -21,3 +21,8 @@
   (-> county
       :elements
       (get coord)))
+
+(defn elements
+  "Gets all the elements at this county"
+  [county]
+  (:elements county))

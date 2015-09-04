@@ -4,14 +4,27 @@
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.county :as county]))
 
-(defrecord Game [county])
+(defrecord Game [county player-action])
 
 (defn create
   "Creates a new game"
-  []
-  (->Game (county/create 3 3)))
+  ([]
+   (create 3 3))
+  ([w h]
+   (map->Game {:county (county/create w h)})))
 
-(defn create-small
-  "Creates a new small game"
-  []
-  (->Game (county/create 3 3)))
+(defn elements
+  "Gets all elements on the map"
+  [game]
+  (vals (county/elements (:county game))))
+
+(defn register
+  "Registers a new element on a given coordinate"
+  [game coord elem]
+  (let [current-county (:county game)]
+    (assoc game :county (county/register current-county coord elem))))
+
+(defn player-action
+  "Sets the player action on the current game"
+  [game player-action]
+  (assoc game :player-action player-action))

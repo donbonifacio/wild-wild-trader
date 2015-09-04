@@ -3,5 +3,6 @@
   "Element represents something that can be placed on the map/county")
 
 (defprotocol Element
-  (id [elem] "Gets an unique identifier for this element"))
+  (id [elem] "Gets an unique identifier for this element")
+  (process-turn [elem game] "Processes the turn for this element"))
 

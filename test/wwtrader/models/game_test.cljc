@@ -5,6 +5,5 @@
        :cljs [cljs.test :refer-macros [deftest testing is run-tests]])))
 
 (deftest creation
-  (is (game/create))
-  (is (game/create-small)))
+  (is (game/create)))
 
