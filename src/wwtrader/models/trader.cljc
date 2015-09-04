@@ -11,10 +11,8 @@
   (let [current-coord (e/coord elem)
         new-coord (coord/offset current-coord (:offset action))
         new-element (e/coord elem new-coord)]
-    {:game (-> 
-               (game/purge game elem)
-               (game/register new-element))}
-    ))
+    {:game (-> (game/purge game elem)
+               (game/register new-element))}))
 
 (defn- process
   "Processes the turn from given actions"

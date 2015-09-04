@@ -26,4 +26,7 @@
           (+ (y coord) oy)))
 
 (def c0-1 (create 0 1))
+(def c1-0 (create 1 0))
 (def c1-1 (create 1 1))
+(def c1-2 (create 1 2))
+(def c2-1 (create 2 1))
