@@ -3,4 +3,4 @@
 
 (defn render
   [state]
-  [:h2 "Wild Wild Trader : Playground"])
+  [:div ])

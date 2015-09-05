@@ -8,12 +8,15 @@
 (defn- browser?
   "True if running on the browser"
   []
-  js)
+  (boolean js/document))
 
 (defn on-js-reload []
-  (when (browser?)
-    (println "Reloaded...")
-    (reagent/render-component [layout/render] (. js/document (getElementById "app")))))
+  (try
+      (reagent/render-component [layout/render] (. js/document (getElementById "app")))
+      (println "Reloaded...")
+    (catch :default e
+      (println "Error setting up browser env...")
+      (println e))))
 
 (defn init []
   (secretary/set-config! :prefix "#")
