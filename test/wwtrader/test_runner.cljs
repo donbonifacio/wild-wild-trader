@@ -1,4 +1,4 @@
-(ns obb-rules.test-runner
+(ns wwtrader.test-runner
   (:require [cljs.test :refer-macros [run-tests run-all-tests] :refer [empty-env report]]
             [wwtrader.test-requires]))
 
