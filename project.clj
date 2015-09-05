@@ -24,7 +24,7 @@
 
                         :cljsbuild {
                             :builds [{:id "dev"
-                              :figwheel {:on-jsload "wwtrader.core/on-js-reload"}
+                              :figwheel {:on-jsload "wwtrader-playground.core/on-js-reload"}
                               :source-paths ["src"]
                               :compiler {:main wwtrader-playground.core
                                          :figwheel true
