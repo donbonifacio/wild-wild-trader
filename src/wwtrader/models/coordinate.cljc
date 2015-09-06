@@ -30,3 +30,4 @@
 (def c1-1 (create 1 1))
 (def c1-2 (create 1 2))
 (def c2-1 (create 2 1))
+(def c2-2 (create 2 2))
