@@ -1,6 +1,8 @@
 (ns ^:figwheel-always wwtrader-playground.core
   (:require [reagent.core :as reagent]
             [secretary.core :as secretary]
+            [wwtrader.game-generator :as game-generator]
+            [wwtrader-playground.state :as state]
             [wwtrader-playground.views.layout :as layout]))
 
 (enable-console-print!)
@@ -20,7 +22,8 @@
 
 (defn init []
   (secretary/set-config! :prefix "#")
-  (secretary/dispatch! "/game")
+  (state/set-page! :game)
+  (state/set-page-data! {:game (game-generator/random)})
   (on-js-reload))
 
 (defonce start
