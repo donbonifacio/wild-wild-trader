@@ -13,6 +13,11 @@
   ([w h]
    (map->Game {:county (county/create w h)})))
 
+(defn county
+  "Gets the county"
+  [game]
+  (:county game))
+
 (defn elements
   "Gets all elements on the map"
   [game]

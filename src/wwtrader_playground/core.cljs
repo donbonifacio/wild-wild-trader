@@ -23,7 +23,7 @@
 (defn init []
   (secretary/set-config! :prefix "#")
   (state/set-page! :game)
-  (state/set-page-data! {:game (game-generator/random)})
+  (state/set-page-data! (game-generator/random))
   (on-js-reload))
 
 (defonce start

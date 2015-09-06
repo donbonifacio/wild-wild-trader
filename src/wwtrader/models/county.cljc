@@ -2,12 +2,15 @@
   wwtrader.models.county
   "Represents a map that should be visible with several elements")
 
-(defrecord County [with height elements])
+(defrecord County [width height elements])
 
 (defn create
   "Creates a new County"
   [w h]
   (->County w h {}))
+
+(defn width "Gets the county's width" [county] (:width county))
+(defn height "Gets the county's height" [county] (:height county))
 
 (defn register
   "Registers a new element on a given coordinate"
