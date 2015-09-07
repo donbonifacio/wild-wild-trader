@@ -31,4 +31,7 @@
 (def c1-2 (create 1 2))
 (def c2-1 (create 2 1))
 (def c2-2 (create 2 2))
+(def c5-1 (create 5 1))
 (def c5-5 (create 5 5))
+(def c5-6 (create 5 6))
+(def c7-7 (create 7 7))

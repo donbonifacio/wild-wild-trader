@@ -4,6 +4,7 @@
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.element :as element]
             [wwtrader.models.trader :as trader]
+            [wwtrader.models.market :as market]
             [wwtrader.models.resource-generator :as resource-generator]
             [wwtrader.models.county :as county]))
 
@@ -34,6 +35,13 @@
 
 (defmethod render-element trader/Trader [trader]
   (raw-render trader {} "Trader"))
+
+(defmethod render-element market/Market [market]
+  (raw-render market
+    {:border "1px solid"
+     :color "blue"
+     :border-color "blue"}
+    "Market"))
 
 (defmethod render-element resource-generator/ResourceGenerator [generator]
   (raw-render generator
