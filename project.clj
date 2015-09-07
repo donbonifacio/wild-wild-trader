@@ -1,6 +1,7 @@
 (defproject wwtrader "0.1.0-SNAPSHOT"
   :description "Roguelike game with trading twists"
   :url "https://github.com/donbonifacio/wild-wild-trader"
+  :min-lein-version "2.5.1"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.48"]
                  [org.clojure/tools.nrepl "0.2.10"]

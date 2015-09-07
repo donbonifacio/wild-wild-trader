@@ -17,7 +17,9 @@
         x (- (coord/x pos) 1)
         y (coord/y pos)]
     [:div.trader {:key (element/id trader)
+                  :id (element/id trader)
                   :style {:position "absolute"
+                          :transition "0.35s"
                           :width cell-size
                           :height cell-size
                           :left (str (* x 12.5) "%")

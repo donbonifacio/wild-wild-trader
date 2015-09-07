@@ -51,3 +51,9 @@
    (:player-action game))
   ([game player-action]
    (assoc game :player-action player-action)))
+
+(defn swap-element
+  "Swaps an element for another"
+  [game elem new-elem]
+  (-> (purge game elem)
+      (register new-elem)))
