@@ -3,6 +3,7 @@
   "Generates random games"
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.trader :as trader]
+            [wwtrader.models.resource-generator :as resource-generator]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
 
@@ -10,4 +11,5 @@
   "Generates a random game"
   []
   (-> (game/create 8 8)
-      (game/register (trader/create coord/c2-2))))
+      (game/register (trader/create coord/c2-2))
+      (game/register (resource-generator/create coord/c5-5))))
