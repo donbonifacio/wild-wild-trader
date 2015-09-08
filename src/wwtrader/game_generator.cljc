@@ -12,6 +12,6 @@
   "Generates a random game"
   []
   (-> (game/create 8 8)
-      (game/register (trader/create coord/c2-2))
       (game/register (market/create coord/c5-1))
-      (game/register (resource-generator/create coord/c7-7))))
+      (game/register (resource-generator/create coord/c7-7))
+      (game/register (trader/create coord/c2-2))))
