@@ -1,5 +1,6 @@
 (ns wwtrader-playground.views.game
   (:require [wwtrader-playground.state :as state]
+            [wwtrader.game-loop :as game-loop]
             [wwtrader.models.game :as game]
             [wwtrader.models.action :as action]
             [wwtrader.models.coordinate :as coord]
@@ -55,8 +56,11 @@
   "Registers the player action"
   [action]
   (let [game (-> (state/get-page-data)
-                 (game/player-action action))]
-    (state/set-page-data! game)))
+                 (game/player-action action)
+                 (game-loop/process-turn)
+                 :game)]
+    (state/set-page-data! game)
+    ))
 
 (defn on-key-press
   "Handles on key pressed"
