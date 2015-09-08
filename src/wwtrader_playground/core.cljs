@@ -7,11 +7,6 @@
 
 (enable-console-print!)
 
-(defn- browser?
-  "True if running on the browser"
-  []
-  (boolean js/document))
-
 (defn on-js-reload []
   (try
       (reagent/render-component [layout/render] (. js/document (getElementById "app")))

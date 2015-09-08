@@ -1,6 +1,7 @@
 (ns wwtrader-playground.views.game
   (:require [wwtrader-playground.state :as state]
             [wwtrader.models.game :as game]
+            [wwtrader.models.action :as action]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.element :as element]
             [wwtrader.models.trader :as trader]
@@ -50,6 +51,26 @@
      :border-color "green"}
     [:div "Gen" [:br] (resource-generator/resource generator)]))
 
+(defn register-action!
+  "Registers the player action"
+  [action]
+  (let [state (state/get-page-data)
+        game (-> state
+                 :game
+                 (game/player-action action))]
+    (state/set-page-data! (assoc state :game game))
+    (println "Register" action)))
+
+(defn on-key-press
+  "Handles on key pressed"
+  [e]
+  (condp some [(.-keyCode e)]
+    #{39} (register-action! action/right)
+    #{37} (register-action! action/left)
+    #{38} (register-action! action/up)
+    #{40} (register-action! action/down)
+    (println "Ignoring key" (.-keyCode e))))
+
 (defn- board
   "Renders the game board"
   [game]
@@ -66,4 +87,5 @@
 (defn render
   [state]
   (let [game (:game state)]
+    (. js/document (addEventListener "keydown" on-key-press))
     [:div (board game)]))
