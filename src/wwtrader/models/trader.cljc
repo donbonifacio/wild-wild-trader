@@ -9,7 +9,7 @@
 
 (defmethod process-action :move [action elem game]
   (let [current-coord (e/coord elem)
-        new-coord (coord/offset current-coord (:offset action))
+        new-coord (coord/offset current-coord (:args action))
         new-elem (e/coord elem new-coord)]
     {:game (game/swap-element game elem new-elem)}))
 

@@ -54,12 +54,9 @@
 (defn register-action!
   "Registers the player action"
   [action]
-  (let [state (state/get-page-data)
-        game (-> state
-                 :game
+  (let [game (-> (state/get-page-data)
                  (game/player-action action))]
-    (state/set-page-data! (assoc state :game game))
-    (println "Register" action)))
+    (state/set-page-data! game)))
 
 (defn on-key-press
   "Handles on key pressed"
@@ -84,8 +81,18 @@
      (map render-element (game/elements game))]
   ))
 
+(defn debug-info
+  "Renders debug-info"
+  [game]
+  [:ul
+   (if-let [action (game/player-action game)]
+     [:li [:b "Player Action"] [:br] (pr-str action)]
+     [:li [:b "Player Action"] [:br] "None"])])
+
 (defn render
   [state]
   (let [game (:game state)]
     (. js/document (addEventListener "keydown" on-key-press))
-    [:div (board game)]))
+    [:div
+      [:div (board game)]
+      [:div (debug-info game)]]))
