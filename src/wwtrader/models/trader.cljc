@@ -14,7 +14,7 @@
       (game/invalid-destination? game new-coord)
         {:success false :error :invalid-destination :game game}
       :else
-        {:game (game/swap-element game elem (e/coord elem new-coord))})))
+        {:success true :game (game/swap-element game elem (e/coord elem new-coord))})))
 
 (defn- process
   "Processes the turn from given actions"

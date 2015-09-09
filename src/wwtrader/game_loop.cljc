@@ -9,9 +9,9 @@
   "Calls element turn"
   [result element]
   (let [result (element/process-turn element result)]
-    (if (= true (:success result))
-      result
-      (reduced result))))
+    (if (= false (:success result))
+      (reduced result)
+      result)))
 
 (defn process-turn
   "Processes a single turn in the game"
