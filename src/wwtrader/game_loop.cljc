@@ -7,15 +7,14 @@
 
 (defn- element-turn
   "Calls element turn"
-  [game element]
-  (element/process-turn element game))
+  [result element]
+  (let [result (element/process-turn element result)]
+    (if (= true (:success result))
+      result
+      (reduced result))))
 
 (defn process-turn
   "Processes a single turn in the game"
   [game]
   (let [elements (game/elements game)]
-    (reduce element-turn game elements))
-  ;get elements
-    ;>! {:game game}
-    ;<! wait result
-    )
+    (reduce element-turn {:game game} elements)))

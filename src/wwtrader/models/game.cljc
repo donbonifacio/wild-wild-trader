@@ -2,6 +2,7 @@
   wwtrader.models.game
   "Represents a complete game with all the associated data"
   (:require [wwtrader.models.element :as e]
+            [wwtrader.models.coordinate :as coord]
             [wwtrader.models.county :as county]))
 
 (defrecord Game [county player-action])
@@ -57,3 +58,16 @@
   [game elem new-elem]
   (-> (purge game elem)
       (register new-elem)))
+
+(defn invalid-destination?
+  "True if the given coordinate is possible to move into"
+  [game coord]
+  (let [x (coord/x coord)
+        y (coord/y coord)
+        county (county game)
+        w (county/width county)
+        h (county/height county)]
+    (or (< x 0)
+        (< y 0)
+        (>= x w)
+        (>= y h))))

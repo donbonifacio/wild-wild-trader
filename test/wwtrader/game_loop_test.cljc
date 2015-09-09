@@ -24,3 +24,22 @@
   (move-test action/down coord/c1-2)
   (move-test action/right coord/c2-1)
   (move-test action/left coord/c0-1))
+
+(defn- out-of-bounds-move-test
+  "Tests a out of bounds move action"
+  [action expected-coord]
+  (let [game (-> (game-builds/player-alone)
+                 (game/player-action action))]
+    (let [result (-> game
+                     (game-loop/process-turn)
+                     :game
+                     (game-loop/process-turn))
+          game (:game result)]
+      (is (= false (:success result)))
+      (is (game/at game expected-coord)))))
+
+(deftest out-of-bounds-movement
+  (out-of-bounds-move-test action/up coord/c1-0)
+  (out-of-bounds-move-test action/down coord/c1-2)
+  (out-of-bounds-move-test action/right coord/c2-1)
+  (out-of-bounds-move-test action/left coord/c0-1))
