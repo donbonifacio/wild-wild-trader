@@ -88,14 +88,14 @@
   "Renders debug-info"
   [result game]
   [:div
-   [:h3 "Data"]
+   [:h3 {:style {:margin 0}} "Data"]
    [:ul
     (if-let [action (game/player-action game)]
-      [:li [:b "Player Action"] [:br] (pr-str action)]
-      [:li [:b "Player Action"] [:br] "None"])
-    [:li [:b "Result"] [:br] (pr-str (dissoc result :game))]
+      [:li [:b "Player Action"] " " (pr-str action)]
+      [:li [:b "Player Action"] " None"])
+    [:li [:b "Result"] " " (pr-str (dissoc result :game))]
    ]
-   [:h3 "Elements"]
+   [:h3 {:style {:margin 0}} "Elements"]
    [:ul
     (map (fn [element]
            [:li {:key (element/id element)} (pr-str element)])
