@@ -21,8 +21,8 @@
   [elem specific-style specific-content]
   (let [pos (element/coord elem)
         id (element/id elem)
-        x (- (coord/x pos) 1)
-        y (coord/y pos)]
+        x (coord/x pos)
+        y (+ (coord/y pos) 1)]
     [:div {:key id
            :id id
            :style (merge {:position "absolute"
@@ -87,12 +87,19 @@
 (defn debug-info
   "Renders debug-info"
   [result game]
-  [:ul
-   (if-let [action (game/player-action game)]
-     [:li [:b "Player Action"] [:br] (pr-str action)]
-     [:li [:b "Player Action"] [:br] "None"])
-   [:li [:b "Result"] [:br] (pr-str (dissoc result :game))]
-   ])
+  [:div
+   [:h3 "Data"]
+   [:ul
+    (if-let [action (game/player-action game)]
+      [:li [:b "Player Action"] [:br] (pr-str action)]
+      [:li [:b "Player Action"] [:br] "None"])
+    [:li [:b "Result"] [:br] (pr-str (dissoc result :game))]
+   ]
+   [:h3 "Elements"]
+   [:ul
+    (map (fn [element]
+           [:li {:key (element/id element)} (pr-str element)])
+         (game/elements game))]])
 
 (defn- get-page-data
   "Gets the page data given the global state"
