@@ -20,4 +20,11 @@
         cargo (trader/cargo trader)]
     (is (:success result))
     (is (= 1 (count cargo)))
-    (is (= false (:available? generator)))))
+    (is (= false (resource-generator/available? generator)))
+
+    (testing "resource generated again"
+      (let [new-generator (assoc generator :generation-time 1)
+            game (game/swap-element new-game generator new-generator)
+            result (game-loop/process-turn game)
+            generator (game/at (:game result) coord/c2-1)]
+        (is (= true (resource-generator/available? generator)))))))

@@ -40,7 +40,7 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 [] 9))
+  (->Trader (gensym) coord 3 [] 3))
 
 (defn cargo
   "Gets the trader's cargo"
@@ -50,7 +50,7 @@
 (defn cargo-space-available?
   "True if this trader has space in cargo"
   [trader]
-  (>= (:cargo-limit trader) (count (:cargo trader))))
+  (> (:cargo-limit trader) (count (:cargo trader))))
 
 (defn add-cargo
   "Adds cargo to the trader"
