@@ -5,6 +5,12 @@
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
 
+(defn- interact
+  "Interacts with another element"
+  [game elem new-coord]
+  (-> (game/at game new-coord)
+      (e/interact-with elem game)))
+
 (defmulti process-action (fn [action elem game] (:action-type action)))
 
 (defmethod process-action :move [action elem game]
@@ -13,6 +19,8 @@
     (cond
       (game/invalid-destination? game new-coord)
         {:success false :error :invalid-destination :game game}
+      (game/at game new-coord)
+        (interact game elem new-coord)
       :else
         {:success true :game (game/swap-element game elem (e/coord elem new-coord))})))
 
@@ -22,7 +30,7 @@
   (let [game (:game result)]
     (process-action (game/player-action game) elem game)))
 
-(defrecord Trader [id coord hitpoints cargo]
+(defrecord Trader [id coord hitpoints cargo cargo-limit]
   e/Element
   (id [elem] id)
   (coord [elem] coord)
@@ -32,4 +40,19 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 []))
+  (->Trader (gensym) coord 3 [] 9))
+
+(defn cargo
+  "Gets the trader's cargo"
+  [trader]
+  (:cargo trader))
+
+(defn cargo-space-available?
+  "True if this trader has space in cargo"
+  [trader]
+  (>= (:cargo-limit trader) (count (:cargo trader))))
+
+(defn add-cargo
+  "Adds cargo to the trader"
+  [trader cargo-item]
+  (assoc trader :cargo (conj (:cargo trader) cargo-item)))
