@@ -46,11 +46,16 @@
     "Market"))
 
 (defmethod render-element resource-generator/ResourceGenerator [generator]
-  (raw-render generator
-    {:border "1px solid"
-     :color "green"
-     :border-color "green"}
-    [:div "Gen" [:br] (resource-generator/resource generator)]))
+  (let [available? (resource-generator/available? generator)
+        color (if available? "green" "black")]
+    (raw-render generator
+      {:border "1px solid"
+       :color color
+       :border-color color}
+      [:div "Gen" [:br]
+       (if available?
+         (resource-generator/resource generator)
+         "Empty")])))
 
 (defn register-action!
   "Registers the player action"
@@ -106,11 +111,25 @@
   [state]
   (:game state))
 
+(defn- hud
+  "Shows the player's data"
+  [game]
+  (let [trader (first (filter #(instance? trader/Trader %) (game/elements game)))]
+    [:div
+     [:h3 "Trader"]
+     [:h6 "Cargo"]
+     [:ul
+      (map-indexed (fn [idx cargo-item]
+                     [:li {:key idx} cargo-item])
+                   (trader/cargo trader))]]))
+
 (defn render
   [state]
   (let [result (get-page-data state)
         game (:game result)]
     (. js/document (addEventListener "keydown" on-key-press))
     [:div
-      [:div (board game)]
-      [:div (debug-info result game)]]))
+     [:div
+      [:div {:style {:float "left"}} (board game)]
+      [:div {:style {:float "left" :margin-left "10px"}} (hud game)]]
+      [:div {:style {:clear "both"}} (debug-info result game)]]))
