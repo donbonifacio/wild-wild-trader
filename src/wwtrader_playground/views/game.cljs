@@ -117,6 +117,8 @@
   (let [trader (first (filter #(instance? trader/Trader %) (game/elements game)))]
     [:div
      [:h3 "Trader"]
+     [:ul
+      [:li "Money " (trader/money trader) "$"]]
      [:h6 "Cargo"]
      [:ul
       (map-indexed (fn [idx cargo-item]
