@@ -3,6 +3,7 @@
   "Buys resources"
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.coordinate :as coord]
+            [wwtrader.models.trader :as trader]
             [wwtrader.models.game :as game]))
 
 (defn- process
@@ -10,12 +11,26 @@
   [elem game]
   game)
 
+(defn- interact-with
+  "Interacts with another element"
+  [market trader game]
+  (let [resource (:resource market)
+        all-items (trader/cargo trader)
+        wanted-items (filter #(= % resource) all-items)
+        nitems (count wanted-items)
+        money (* nitems 1)]
+    (if (seq wanted-items)
+      (let [new-trader (trader/remove-items-for-money trader resource money)]
+        {:success true :sold nitems :money money :game (game/swap-element game trader new-trader)})
+      {:success true :sold 0 :money money :game game})))
+
 (defrecord Market [id coord resource]
   e/Element
   (id [elem] id)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
-  (process-turn [elem game] (process elem game)))
+  (process-turn [elem game] (process elem game))
+  (interact-with [elem other game] (interact-with elem other game)))
 
 (defn create
   "Creates a new Market"

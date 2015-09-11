@@ -30,7 +30,7 @@
   (let [game (:game result)]
     (process-action (game/player-action game) elem game)))
 
-(defrecord Trader [id coord hitpoints cargo cargo-limit]
+(defrecord Trader [id coord hitpoints cargo cargo-limit money]
   e/Element
   (id [elem] id)
   (coord [elem] coord)
@@ -40,7 +40,7 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 [] 3))
+  (->Trader (gensym) coord 3 [] 3 5))
 
 (defn cargo
   "Gets the trader's cargo"
@@ -56,3 +56,19 @@
   "Adds cargo to the trader"
   [trader cargo-item]
   (assoc trader :cargo (conj (:cargo trader) cargo-item)))
+
+(defn remove-cargo
+  "Removes cargo (all entries for the given item)"
+  [trader item]
+  (assoc trader :cargo (remove #(= % item) (:cargo trader))))
+
+(defn money
+  "Handles the trader's money"
+  [trader]
+  (:money trader))
+
+(defn remove-items-for-money
+  "Removes items and stores money"
+  [trader item money]
+  (-> (remove-cargo trader item)
+      (assoc :money (+ (:money trader) money))))

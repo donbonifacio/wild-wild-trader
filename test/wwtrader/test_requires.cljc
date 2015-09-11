@@ -4,4 +4,6 @@
             [wwtrader.models.trader-test]
             [wwtrader.models.game-test]
             [wwtrader.game-loop-test]
+            [wwtrader.models.market-test]
             [wwtrader.models.resource-generator-test]))
+
