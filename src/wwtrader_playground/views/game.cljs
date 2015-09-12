@@ -118,7 +118,8 @@
     [:div
      [:h3 "Trader"]
      [:ul
-      [:li "Money " (trader/money trader) "$"]]
+      [:li "Money " (trader/money trader) "$"]
+      [:li "Energy " (trader/energy trader)]]
      [:h6 "Cargo"]
      [:ul
       (map-indexed (fn [idx cargo-item]

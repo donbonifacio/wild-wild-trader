@@ -36,6 +36,8 @@
   (let [current-coord (e/coord elem)
         new-coord (coord/offset current-coord (:args action))]
     (cond
+      (<= (energy elem) 0)
+        {:success false :error :no-energy :game game}
       (game/invalid-destination? game new-coord)
         {:success false :error :invalid-destination :game game}
       (game/at game new-coord)
