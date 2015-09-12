@@ -2,6 +2,7 @@
   (:require
     [wwtrader.game-loop :as game-loop]
     [wwtrader.models.game :as game]
+    [wwtrader.models.trader :as trader]
     [wwtrader.models.coordinate :as coord]
     [wwtrader.models.action :as action]
     [wwtrader.game-builds :as game-builds]
@@ -12,12 +13,15 @@
   "Tests a move action"
   [action expected-coord]
   (let [game (-> (game-builds/player-alone)
-                 (game/player-action action))]
+                 (game/player-action action))
+        trader (game/at game coord/c1-1)]
     (is (= 1 (count (game/elements game))))
     (let [result (game-loop/process-turn game)
-          game (:game result)]
+          game (:game result)
+          moved-trader (game/at game expected-coord)]
       (is (not (game/at game coord/c1-1)))
-      (is (game/at game expected-coord)))))
+      (is (game/at game expected-coord))
+      (is (< (trader/energy moved-trader) (trader/energy trader))))))
 
 (deftest movement
   (move-test action/up coord/c1-0)

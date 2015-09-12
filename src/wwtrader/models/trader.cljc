@@ -11,6 +11,25 @@
   (-> (game/at game new-coord)
       (e/interact-with elem game)))
 
+(defn energy
+  "Handles the trader's energy"
+  ([trader]
+   (:energy trader))
+  ([trader new-energy]
+   (assoc trader :energy new-energy)))
+
+(defn take-energy
+  "Removes energy from the trader"
+  [trader taken-energy]
+  (assoc trader :energy (- (energy trader) taken-energy)))
+
+(defn- move-trader
+  "Processes movement for the trader"
+  [trader new-coord]
+  (-> trader
+      (take-energy 2)
+      (e/coord new-coord)))
+
 (defmulti process-action (fn [action elem game] (:action-type action)))
 
 (defmethod process-action :move [action elem game]
@@ -22,7 +41,7 @@
       (game/at game new-coord)
         (interact game elem new-coord)
       :else
-        {:success true :game (game/swap-element game elem (e/coord elem new-coord))})))
+        {:success true :game (game/swap-element game elem (move-trader elem new-coord))})))
 
 (defn- process
   "Processes the turn from given actions"
@@ -30,7 +49,7 @@
   (let [game (:game result)]
     (process-action (game/player-action game) elem game)))
 
-(defrecord Trader [id coord hitpoints cargo cargo-limit money]
+(defrecord Trader [id coord hitpoints cargo cargo-limit money energy]
   e/Element
   (id [elem] id)
   (coord [elem] coord)
@@ -40,7 +59,7 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 [] 3 5))
+  (->Trader (gensym) coord 3 [] 3 5 100))
 
 (defn cargo
   "Gets the trader's cargo"
