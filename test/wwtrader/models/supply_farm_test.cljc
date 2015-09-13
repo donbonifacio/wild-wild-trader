@@ -25,5 +25,14 @@
     (is (= 1 (count cargo)))
     (is (= "supplies" (first cargo)))
     (is (= (supply-farm/cost farm) (:cost result)))
-    (is (= new-money (- money (:cost result))))))
+    (is (= new-money (- money (:cost result))))
+
+    (testing "use supplies"
+      (let [empty-trader (trader/energy new-trader 0)
+            game (-> (game/swap-element new-game new-trader empty-trader)
+                     (game/player-action action/take-supplies))
+            result (game-loop/process-turn game)
+            trader (game/at (:game result) coord/c1-1)]
+        (is (:success result))
+        (is (not= 0 (trader/energy trader)))))))
 

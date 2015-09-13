@@ -8,3 +8,5 @@
 (def right (map->Action {:action-type :move :args [1 0]}))
 (def up (map->Action {:action-type :move :args [0 -1]}))
 (def down (map->Action {:action-type :move :args [0 1]}))
+
+(def take-supplies (map->Action {:action-type :take-supplies}))

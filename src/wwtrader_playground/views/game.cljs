@@ -131,6 +131,12 @@
      [:ul
       [:li "Money " (trader/money trader) "$"]
       [:li "Energy " (trader/energy trader)]]
+     [:h6 "Skills"]
+     [:ul
+      (map-indexed (fn [idx k]
+                     [:li {:key idx}
+                      [:button {:on-click (fn [] (register-action! k))} (name k)]])
+                   (trader/skills trader))]
      [:h6 "Cargo"]
      [:ul
       (map-indexed (fn [idx cargo-item]
