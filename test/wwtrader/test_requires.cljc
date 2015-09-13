@@ -5,5 +5,6 @@
             [wwtrader.models.game-test]
             [wwtrader.game-loop-test]
             [wwtrader.models.market-test]
+            [wwtrader.models.supply-farm-test]
             [wwtrader.models.resource-generator-test]))
 

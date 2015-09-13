@@ -88,8 +88,19 @@
   [trader]
   (:money trader))
 
+(defn take-money
+  "Takes money from trader"
+  [trader money]
+  (assoc trader :money (- (:money trader) money)))
+
+(defn give-money
+  "Gives money from trader"
+  [trader money]
+  (assoc trader :money (+ (:money trader) money)))
+
 (defn remove-items-for-money
   "Removes items and stores money"
   [trader item money]
   (-> (remove-cargo trader item)
-      (assoc :money (+ (:money trader) money))))
+      (give-money money)))
+
