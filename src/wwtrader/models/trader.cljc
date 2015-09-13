@@ -76,6 +76,13 @@
   [trader item]
   (assoc trader :cargo (remove #(= % item) (:cargo trader))))
 
+(defn remove-cargo-once
+  "Removes a single cargo item"
+  [trader item]
+  (let [[n m] (split-with (partial not= item) (cargo trader))
+        new-cargo (concat n (rest m))]
+    (assoc trader :cargo new-cargo)))
+
 (defn money
   "Handles the trader's money"
   [trader]
@@ -120,5 +127,6 @@
     (not (some #{"supplies"} (cargo elem)))
       {:success false :error :no-supplies :game game}
     :else
-      {:success true :game (game/swap-element game elem (energy elem 100))}))
+      {:success true :game (game/swap-element game elem (-> (energy elem 100)
+                                                            (remove-cargo-once "supplies")))}))
 

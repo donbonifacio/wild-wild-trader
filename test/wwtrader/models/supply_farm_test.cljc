@@ -34,5 +34,6 @@
             result (game-loop/process-turn game)
             trader (game/at (:game result) coord/c1-1)]
         (is (:success result))
+        (is (= 0 (count (trader/cargo trader))))
         (is (not= 0 (trader/energy trader)))))))
 
