@@ -8,6 +8,7 @@
             [wwtrader.models.trader :as trader]
             [wwtrader.models.market :as market]
             [wwtrader.models.resource-generator :as resource-generator]
+            [wwtrader.models.supply-farm :as supply-farm]
             [wwtrader.models.county :as county]))
 
 (def cell-size 50)
@@ -44,6 +45,16 @@
      :color "blue"
      :border-color "blue"}
     "Market"))
+
+(defmethod render-element supply-farm/SupplyFarm [farm]
+  (let [cost (supply-farm/cost farm)
+        color "pink"]
+    (raw-render farm
+      {:border "1px solid"
+       :color color
+       :font-size "14px"
+       :border-color color}
+      [:div "Supplies" [:br] (str cost "$")])))
 
 (defmethod render-element resource-generator/ResourceGenerator [generator]
   (let [available? (resource-generator/available? generator)
