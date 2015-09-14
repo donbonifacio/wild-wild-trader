@@ -107,7 +107,7 @@
 (defn skills
   "Gets the possible skills for this trader"
   [trader]
-  (keys (:skills trader)))
+  (:skills trader))
 
 (defmethod process-action :move [action elem game]
   (let [current-coord (e/coord elem)
