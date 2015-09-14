@@ -25,6 +25,30 @@
   (create (+ (x coord) ox)
           (+ (y coord) oy)))
 
+(defn adjacent?
+  "Checks if two coordinates are adjacent"
+  [c1 c2]
+  (let [dx (- (x c1) (x c2))
+        dy (- (y c1) (y c2))]
+    (and
+      (< -2 dx)
+      (> 2 dx)
+      (< -2 dy)
+      (> 2 dy))))
+
+(defn perpendicular?
+  "True if the coordinates are perpendicular"
+  [c1 c2]
+  (or (= (x c1) (x c2))
+      (= (y c1) (y c2))))
+
+(defn adjacent-perpendicular?
+  "True if the given coords are perpendicular and adjacent"
+  [c1 c2]
+  (and (perpendicular? c1 c2)
+       (adjacent? c1 c2)))
+
+(def c0-0 (create 0 0))
 (def c0-1 (create 0 1))
 (def c1-0 (create 1 0))
 (def c1-1 (create 1 1))
