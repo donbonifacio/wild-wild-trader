@@ -2,6 +2,7 @@
   (:require [wwtrader-playground.state :as state]
             [wwtrader.game-loop :as game-loop]
             [wwtrader.models.game :as game]
+            [wwtrader.models.bandit :as bandit]
             [wwtrader.models.action :as action]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.element :as element]
@@ -45,6 +46,15 @@
      :color "blue"
      :border-color "blue"}
     "Market"))
+
+(defmethod render-element bandit/Bandit [bandit]
+  (let [color "orange"]
+    (raw-render bandit
+      {:border "1px dashed"
+       :color color
+       :font-size "14px"
+       :border-color color}
+      [:div "Bandit"])))
 
 (defmethod render-element supply-farm/SupplyFarm [farm]
   (let [cost (supply-farm/cost farm)
