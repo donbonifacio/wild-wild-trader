@@ -109,3 +109,14 @@
                 all))
             []
             possible)))
+
+(defn random-empty-coord
+  "Gets a coordinate that it's empty"
+  [game]
+  (let [county (county game)
+        w (county/width county)
+        h (county/height county)
+        lucky (coord/create (rand-int h) (rand-int w))]
+    (if (not (at game lucky))
+      lucky
+      (recur game))))

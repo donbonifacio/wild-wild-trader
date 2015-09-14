@@ -25,3 +25,10 @@
     (validate-destination game (coord/create 1 1) false)
     (validate-destination game (coord/create 2 2) false)))
 
+(deftest random-empty-coord
+  (let [game (game/create)]
+    (is (game/random-empty-coord game))
+    (is (game/random-empty-coord game))
+    (is (game/random-empty-coord game))
+    (is (game/random-empty-coord game))))
+
