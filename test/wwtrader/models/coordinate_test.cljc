@@ -34,3 +34,11 @@
        (coord/create 1 1) (coord/create 2 2)
        (coord/create 1 1) (coord/create 5 5)
        (coord/create 1 1) (coord/create 0 0)))
+
+(deftest sort-by-distance
+  (let [target (coord/create 3 2)
+        coords [(coord/create 0 4)
+                (coord/create 1 3)
+                (coord/create 0 2)]
+        lucky (first (coord/sort-by-distance target coords))]
+    (is (= lucky (coord/create 1 3)))))
