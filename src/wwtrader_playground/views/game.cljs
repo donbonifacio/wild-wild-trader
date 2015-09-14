@@ -96,10 +96,10 @@
   "Handles on key pressed"
   [e]
   (condp some [(.-keyCode e)]
-    #{39} (register-action! action/right)
-    #{37} (register-action! action/left)
-    #{38} (register-action! action/up)
-    #{40} (register-action! action/down)
+    #{39 76} (register-action! action/right)
+    #{37 72} (register-action! action/left)
+    #{38 75} (register-action! action/up)
+    #{40 74} (register-action! action/down)
     (println "Ignoring key" (.-keyCode e))))
 
 (defn- board
