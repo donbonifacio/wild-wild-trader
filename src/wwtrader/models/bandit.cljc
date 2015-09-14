@@ -40,7 +40,7 @@
   (let [game (:game result)
         trader (first (game/find-elements game trader/elem-type))]
     (if (:move? elem)
-      (if (coord/adjacent? (e/coord trader) (e/coord elem))
+      (if (coord/adjacent-perpendicular? (e/coord trader) (e/coord elem))
         (attack game trader elem)
         (move game trader elem))
       {:success true :game (game/swap-element game elem (assoc elem :move? true))})))
