@@ -5,14 +5,25 @@
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.county :as county]))
 
-(defrecord Game [county player-action])
+(defrecord Game [county player-action turn])
 
 (defn create
   "Creates a new game"
   ([]
    (create 3 3))
   ([w h]
-   (map->Game {:county (county/create w h)})))
+   (map->Game {:county (county/create w h)
+               :turn 0})))
+
+(defn inc-turn
+  "Increments the turn"
+  [game]
+  (update game :turn inc))
+
+(defn turn
+  "Gets the game's current turn"
+  [game]
+  (:turn game))
 
 (defn county
   "Gets the county"

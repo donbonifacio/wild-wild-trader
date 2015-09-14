@@ -6,6 +6,7 @@
             [wwtrader.models.action :as action]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.element :as element]
+            [wwtrader.models.god :as god]
             [wwtrader.models.trader :as trader]
             [wwtrader.models.market :as market]
             [wwtrader.models.resource-generator :as resource-generator]
@@ -36,6 +37,10 @@
                           :border "1px dotted"}
                          specific-style)}
      specific-content]))
+
+
+(defmethod render-element god/God [god]
+  (comment "No render"))
 
 (defmethod render-element trader/Trader [trader]
   (raw-render trader {} "Trader"))
@@ -137,6 +142,8 @@
   [game]
   (let [trader (first (filter #(instance? trader/Trader %) (game/elements game)))]
     [:div
+     [:ul
+      [:li "Turn " (game/turn game)]]
      [:h3 "Trader"]
      [:ul
       [:li "Money " (trader/money trader) "$"]

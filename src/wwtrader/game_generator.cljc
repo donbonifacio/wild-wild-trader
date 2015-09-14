@@ -3,6 +3,7 @@
   "Generates random games"
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.trader :as trader]
+            [wwtrader.models.god :as god]
             [wwtrader.models.bandit :as bandit]
             [wwtrader.models.market :as market]
             [wwtrader.models.resource-generator :as resource-generator]
@@ -14,6 +15,7 @@
   "Generates a random game"
   []
   (-> (game/create 8 8)
+      (game/register (god/create))
       (game/register (market/create coord/c5-1))
       (game/register (bandit/create coord/c0-0))
       (game/register (supply-farm/create coord/c1-6))
