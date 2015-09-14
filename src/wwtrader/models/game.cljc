@@ -60,7 +60,7 @@
       (register new-elem)))
 
 (defn invalid-destination?
-  "True if the given coordinate is possible to move into"
+  "True if the given coordinate is not possible to move into"
   [game coord]
   (let [x (coord/x coord)
         y (coord/y coord)
@@ -71,3 +71,30 @@
         (< y 0)
         (>= x w)
         (>= y h))))
+
+(defn find-elements
+  "Finds elements by type"
+  [game elem-type]
+  (filter #(instance? elem-type %) (elements game)))
+
+(defn possible-move?
+  "Checks if it's possible to move to the given coordinate"
+  [game coord]
+  (and (not (invalid-destination? game coord))
+       (not (at game coord))))
+
+(defn possible-destinations
+  "Gets the possible destinations for a given element"
+  [game elem]
+  (let [c (e/coord elem)
+        possible (-> []
+                     (conj (coord/offset c [0 1]))
+                     (conj (coord/offset c [1 0]))
+                     (conj (coord/offset c [0 -1]))
+                     (conj (coord/offset c [-1 0])))]
+    (reduce (fn [all curr]
+              (if (possible-move? game curr)
+                (conj all curr)
+                all))
+            []
+            possible)))

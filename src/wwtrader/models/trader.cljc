@@ -48,6 +48,8 @@
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem game] (process elem game)))
 
+(def elem-type Trader)
+
 (defn- default-skills
   "Configures the default skills"
   []

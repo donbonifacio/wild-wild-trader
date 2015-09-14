@@ -48,6 +48,15 @@
   (and (perpendicular? c1 c2)
        (adjacent? c1 c2)))
 
+(defn sort-by-distance
+  "Sorts the given coords by distance to the reference"
+  [reference-coord coords]
+  (sort-by (fn [c]
+             (let [dx (- (x c) (x reference-coord))
+                   dy (- (y c) (y reference-coord))]
+               (- (+ dx dy))))
+           coords))
+
 (def c0-0 (create 0 0))
 (def c0-1 (create 0 1))
 (def c1-0 (create 1 0))

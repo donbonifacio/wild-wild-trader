@@ -15,7 +15,7 @@
   []
   (-> (game/create 8 8)
       (game/register (market/create coord/c5-1))
-      (game/register (bandit/create coord/c1-1))
+      (game/register (bandit/create coord/c0-0))
       (game/register (supply-farm/create coord/c1-6))
       (game/register (resource-generator/create coord/c7-7))
       (game/register (trader/create coord/c2-2))))

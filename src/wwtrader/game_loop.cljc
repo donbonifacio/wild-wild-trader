@@ -18,3 +18,11 @@
   [game]
   (let [elements (game/elements game)]
     (reduce element-turn {:game game} elements)))
+
+(defn process-turns
+  "Processes n turns"
+  [game n]
+  (let [result (process-turn game)]
+    (if (or (<= n 1) (not (:success result)))
+      result
+      (recur (:game result) (- n 1)))))
