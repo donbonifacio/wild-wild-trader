@@ -8,15 +8,21 @@
 (defn- element-turn
   "Calls element turn"
   [result element]
-  (let [result (element/process-turn element result)]
+  (let [fresh-element (game/at (:game result) (element/coord element))
+        result (element/process-turn fresh-element result)]
     (if (= false (:success result))
       (reduced result)
       result)))
 
+(defn- priority-sorter
+  "Sorts elements by priority"
+  [element]
+  (element/priority element))
+
 (defn process-turn
   "Processes a single turn in the game"
   [game]
-  (let [elements (game/elements game)]
+  (let [elements (sort-by priority-sorter (game/elements game))]
     (reduce element-turn {:game game} elements)))
 
 (defn process-turns

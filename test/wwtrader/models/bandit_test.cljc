@@ -23,5 +23,12 @@
         foe (first (game/find-elements (:game result) bandit/bandit-type))]
     (is foe)
     (is (:success result))
-    (is (coord/adjacent-perpendicular? coord/c2-2 (e/coord foe)))))
+    (is (coord/adjacent-perpendicular? coord/c2-2 (e/coord foe)))
+
+    (testing "attack trader"
+      (let [result (game-loop/process-turn (:game result))
+            game (:game result)
+            trader (game/at game coord/c2-2)]
+        (is (< (trader/energy trader) 100))
+        ))))
 

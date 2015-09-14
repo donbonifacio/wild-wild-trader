@@ -27,6 +27,7 @@
 (defrecord Market [id coord resource]
   e/Element
   (id [elem] id)
+  (priority [elem] 1000)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem game] (process elem game))

@@ -14,28 +14,41 @@
 
 (defn- resolve-destination
   "Finds the next coordinate to move to"
-  [game elem]
+  [game trader elem]
   (let [possible (game/possible-destinations game elem)
-        trader (first (game/find-elements game trader/elem-type))
         sorted (coord/sort-by-distance (e/coord trader) possible)]
     (first sorted)))
+
+(defn- move
+  "Moves the bandit"
+  [game trader elem]
+  {:success true
+   :game (game/swap-element game elem (-> (assoc elem :move? false)
+                                          (e/coord (resolve-destination game trader elem))))})
+
+(defn- attack
+  "Attacks the bandit"
+  [game trader elem]
+  {:success true
+   :attacked? true
+   :game (-> game
+             (game/swap-element trader (trader/take-energy trader 30)))})
 
 (defn- process
   "Processes the turn from given actions"
   [elem result]
-  (let [game (:game result)]
+  (let [game (:game result)
+        trader (first (game/find-elements game trader/elem-type))]
     (if (:move? elem)
-      {:success true :game (game/swap-element game elem (-> (assoc elem :move? false)
-                                                            (e/coord (resolve-destination game elem))))}
-      ;; get possible ajacent coords
-      ;; see witch one is closer to trader
-      ;; move there
-      
+      (if (coord/adjacent? (e/coord trader) (e/coord elem))
+        (attack game trader elem)
+        (move game trader elem))
       {:success true :game (game/swap-element game elem (assoc elem :move? true))})))
 
 (defrecord Bandit [id coord energy move?]
   e/Element
   (id [elem] id)
+  (priority [elem] 100)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem game] (process elem game)))

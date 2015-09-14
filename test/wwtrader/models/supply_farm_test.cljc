@@ -24,8 +24,6 @@
     (is (:success result))
     (is (= 1 (count cargo)))
     (is (= "supplies" (first cargo)))
-    (is (= (supply-farm/cost farm) (:cost result)))
-    (is (= new-money (- money (:cost result))))
 
     (testing "use supplies"
       (let [empty-trader (trader/energy new-trader 0)
