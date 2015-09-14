@@ -37,7 +37,9 @@
   "Processes the turn from given actions"
   [elem result]
   (let [game (:game result)]
-    (process-action (game/player-action game) elem game)))
+    (if-let [action (game/player-action game)]
+      (process-action action elem game)
+      {:success true :idle true :game game})))
 
 (defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills]
   e/Element
