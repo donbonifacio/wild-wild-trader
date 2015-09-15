@@ -58,5 +58,5 @@
 (defn create
   "Creates a new Bandit"
   [coord]
-  (->Bandit (gensym) coord 100 true))
+  (->Bandit (gensym) coord 100 false))
 

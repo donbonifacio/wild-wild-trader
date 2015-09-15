@@ -19,7 +19,7 @@
 
 (deftest move-towards-trader
   (let [game (game-builds/player-and-bandit)
-        result (game-loop/process-turns game 6)
+        result (game-loop/process-turns game 7)
         foe (first (game/find-elements (:game result) bandit/bandit-type))]
     (is foe)
     (is (:success result))
@@ -29,6 +29,5 @@
       (let [result (game-loop/process-turn (:game result))
             game (:game result)
             trader (game/at game coord/c2-2)]
-        (is (< (trader/energy trader) 100))
-        ))))
+        (is (< (trader/energy trader) 100))))))
 
