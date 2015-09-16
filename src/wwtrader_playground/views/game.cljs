@@ -19,6 +19,10 @@
 
 (def cell-size 50)
 
+(def processing?
+  "True if the engine is working and no events should be recorded"
+  (atom false))
+
 (defmulti render-element
   "Renders the given element in HTML"
   (fn [element] (type element)))
@@ -90,15 +94,14 @@
 (defn register-action!
   "Registers the player action"
   [action]
-  (let [result (-> (state/get-page-data)
-                   :game
-                   (game/player-action action)
-                   (game-loop/process-turn))]
-    (state/set-page-data! result)))
-
-(def processing?
-  "True if the engine is working and no events should be recorded"
-  (atom false))
+  (go
+    (let [game (-> (state/get-page-data) :game (game/player-action action))
+          trader-result (game-loop/process-trader-turn game)]
+      (state/set-page-data! trader-result)
+      (<! (timeout 350))
+      (state/set-page-data! (game-loop/process-cpu-turn (:game trader-result)))
+      (<! (timeout 350))
+      (reset! processing? false))))
 
 (defn on-key-press
   "Handles on key pressed"
@@ -111,9 +114,7 @@
         #{37 72} (register-action! action/left)
         #{38 75} (register-action! action/up)
         #{40 74} (register-action! action/down)
-        (println "Ignoring key" (.-keyCode e)))
-      (<! (timeout 500))
-      (reset! processing? false))))
+        (println "Ignoring key" (.-keyCode e))))))
 
 (defn- board
   "Renders the game board"

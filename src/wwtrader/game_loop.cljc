@@ -19,11 +19,36 @@
   [element]
   (element/priority element))
 
+(defn turn-elements
+  "Gets the elements to process on the turn, ordered by run priority"
+  [game]
+  (sort-by priority-sorter (game/elements game)))
+
+(defn process-elements-turn
+  "Processes the turn just for the given elements"
+  [game elements]
+  (reduce element-turn
+          {:game game}
+          elements))
+
+(defn process-trader-turn
+  "Processes the trader's turn"
+  [game]
+  (let [elements (turn-elements game)
+        trader (take 1 elements)]
+    (process-elements-turn game trader)))
+
+(defn process-cpu-turn
+  "Processes the cpu element's turn"
+  [game]
+  (let [elements (turn-elements game)
+        cpu (rest elements)]
+    (process-elements-turn game cpu)))
+
 (defn process-turn
   "Processes a single turn in the game"
   [game]
-  (let [elements (sort-by priority-sorter (game/elements game))]
-    (reduce element-turn {:game game} elements)))
+  (process-elements-turn game (turn-elements game)))
 
 (defn process-turns
   "Processes n turns"
