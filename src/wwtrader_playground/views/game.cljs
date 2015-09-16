@@ -37,7 +37,7 @@
     [:div {:key id
            :id id
            :style (merge {:position "absolute"
-                          :transition "0.35s"
+                          :transition "0.1s"
                           :width cell-size
                           :height cell-size
                           :left (str (* x 12.5) "%")
@@ -98,9 +98,9 @@
     (let [game (-> (state/get-page-data) :game (game/player-action action))
           trader-result (game-loop/process-trader-turn game)]
       (state/set-page-data! trader-result)
-      (<! (timeout 350))
+      (<! (timeout 100))
       (state/set-page-data! (game-loop/process-cpu-turn (:game trader-result)))
-      (<! (timeout 350))
+      (<! (timeout 100))
       (reset! processing? false))))
 
 (defn on-key-press
@@ -114,7 +114,9 @@
         #{37 72} (register-action! action/left)
         #{38 75} (register-action! action/up)
         #{40 74} (register-action! action/down)
-        (println "Ignoring key" (.-keyCode e))))))
+        (do
+          (println "Ignoring key" (.-keyCode e))
+          (reset! processing? false))))))
 
 (defn- board
   "Renders the game board"
@@ -126,7 +128,7 @@
                          :width (str sx "px")
                          :height (str sy "px")
                          :border "1px solid"}}
-     (map render-element (game/elements game))]
+     (map render-element (game-loop/turn-elements game))]
     ))
 
 (defn debug-info
