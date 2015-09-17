@@ -32,7 +32,7 @@
   {:success true
    :attacked? true
    :game (-> game
-             (game/swap-element trader (trader/take-energy trader 30)))})
+             (game/swap-element trader (trader/add-damage trader 30)))})
 
 (defn- process
   "Processes the turn from given actions"

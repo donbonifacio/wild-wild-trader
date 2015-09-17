@@ -24,6 +24,17 @@
   [trader taken-energy]
   (assoc trader :energy (- (energy trader) taken-energy)))
 
+(defn add-damage
+  "Adds damage to the trader"
+  [trader taken-energy]
+  (-> (take-energy trader taken-energy)
+      (update :damage-taken + taken-energy)))
+
+(defn damage-taken
+  "Damage taken on the turn"
+  [trader]
+  (:damage-taken trader))
+
 (defn- move-trader
   "Processes movement for the trader"
   [trader new-coord]
@@ -31,17 +42,29 @@
       (take-energy 2)
       (e/coord new-coord)))
 
+(defn- cleanup
+  "Resets trader info"
+  [result elem]
+    (let [game (:game result)
+          elem (game/at game (e/coord elem))
+          trader (assoc elem :damage-daken 0)]
+      (if elem
+        (assoc result :game (-> game
+                                (game/swap-element elem trader)))
+        result)))
+
 (defmulti process-action (fn [action elem game] (:action-type action)))
 
 (defn- process
   "Processes the turn from given actions"
   [elem result]
   (let [game (:game result)]
-    (if-let [action (game/player-action game)]
-      (process-action action elem game)
-      {:success true :idle true :game game})))
+    (-> (if-let [action (game/player-action game)]
+          (process-action action elem game)
+          {:success true :idle true :game game})
+        (cleanup elem))))
 
-(defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills]
+(defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken]
   e/Element
   (id [elem] id)
   (priority [elem] 0)
@@ -59,7 +82,7 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 [] 3 5 100 (default-skills)))
+  (->Trader (gensym) coord 3 [] 3 5 100 (default-skills) 0))
 
 (defn cargo
   "Gets the trader's cargo"

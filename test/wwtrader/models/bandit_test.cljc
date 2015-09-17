@@ -29,5 +29,6 @@
       (let [result (game-loop/process-turn (:game result))
             game (:game result)
             trader (game/at game coord/c2-2)]
+        (is (> (trader/damage-taken trader) 0))
         (is (< (trader/energy trader) 100))))))
 
