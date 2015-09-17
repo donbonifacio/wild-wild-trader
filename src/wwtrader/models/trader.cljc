@@ -46,7 +46,7 @@
   "Resets trader info"
   [result elem]
   (let [game (:game result)
-        elem (game/at game (e/coord elem))
+        elem (game/at game (:pos result))
         trader (assoc elem :damage-taken 0)]
     (if elem
       (assoc result :game (-> game
@@ -142,13 +142,15 @@
         new-coord (coord/offset current-coord (:args action))]
     (cond
       (<= (energy elem) 0)
-        {:success false :error :no-energy :game game}
+        {:success false :error :no-energy :game game :pos current-coord}
       (game/invalid-destination? game new-coord)
-        {:success false :error :invalid-destination :game game}
+        {:success false :error :invalid-destination :game game :pos current-coord}
       (game/at game new-coord)
-        (interact game elem new-coord)
+        (assoc (interact game elem new-coord) :pos current-coord)
       :else
-        {:success true :game (game/swap-element game elem (move-trader elem new-coord))})))
+        {:success true
+         :pos new-coord
+         :game (game/swap-element game elem (move-trader elem new-coord))})))
 
 (defmethod process-action :take-supplies [action elem game]
   (cond

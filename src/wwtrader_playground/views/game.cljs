@@ -104,8 +104,9 @@
           trader-result (game-loop/process-trader-turn game)]
       (state/set-page-data! trader-result)
       (<! (timeout 100))
-      (state/set-page-data! (game-loop/process-cpu-turn (:game trader-result)))
-      (<! (timeout 100))
+      (when (:success trader-result)
+        (state/set-page-data! (game-loop/process-cpu-turn (:game trader-result)))
+        (<! (timeout 100)))
       (reset! processing? false))))
 
 (defn on-key-press
