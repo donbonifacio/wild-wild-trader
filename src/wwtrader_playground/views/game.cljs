@@ -51,7 +51,12 @@
   (comment "No render"))
 
 (defmethod render-element trader/Trader [trader]
-  (raw-render trader {} "Trader"))
+  (raw-render trader {}
+    [:div "Trader"
+     (let [damage (trader/damage-taken trader)]
+       (if (not= 0 damage)
+         [:div {:style {:color "red"}}
+          "-" damage]))]))
 
 (defmethod render-element market/Market [market]
   (raw-render market

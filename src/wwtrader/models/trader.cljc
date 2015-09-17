@@ -45,13 +45,13 @@
 (defn- cleanup
   "Resets trader info"
   [result elem]
-    (let [game (:game result)
-          elem (game/at game (e/coord elem))
-          trader (assoc elem :damage-daken 0)]
-      (if elem
-        (assoc result :game (-> game
-                                (game/swap-element elem trader)))
-        result)))
+  (let [game (:game result)
+        elem (game/at game (e/coord elem))
+        trader (assoc elem :damage-taken 0)]
+    (if elem
+      (assoc result :game (-> game
+                              (game/swap-element elem trader)))
+      result)))
 
 (defmulti process-action (fn [action elem game] (:action-type action)))
 
