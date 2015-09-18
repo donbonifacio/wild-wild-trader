@@ -72,7 +72,9 @@
                  :color color
                  :font-size "14px"
                  :border-color color}
-                [:div "Bandit"])))
+                [:div "Bandit" (when (bandit/attacked? bandit)
+                                 [:div {:style {:color "red"}}
+                                  "Shoot!"])])))
 
 (defmethod render-element supply-farm/SupplyFarm [farm]
   (let [cost (supply-farm/cost farm)

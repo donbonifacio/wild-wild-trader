@@ -28,13 +28,17 @@
     (testing "attack trader"
       (let [result (game-loop/process-turn (:game result))
             game (:game result)
-            trader (game/at game coord/c2-2)]
+            trader (game/at game coord/c2-2)
+            foe (first (game/find-elements game bandit/bandit-type))]
+        (is (bandit/attacked? foe))
         (is (> (trader/damage-taken trader) 0))
         (is (< (trader/energy trader) 100)))
 
       (testing "trader cleanup"
         (let [result (game-loop/process-turn game)
-              trader (game/at (:game result) coord/c2-2)]
+              trader (game/at (:game result) coord/c2-2)
+              foe (first (game/find-elements game bandit/bandit-type))]
           (is (:success result))
+          (is (not (bandit/attacked? foe)))
           (is (= 0 (trader/damage-taken trader))))))))
 

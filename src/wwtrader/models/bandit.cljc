@@ -23,7 +23,9 @@
   "Moves the bandit"
   [game trader elem]
   {:success true
-   :game (game/swap-element game elem (-> (assoc elem :move? false)
+   :game (game/swap-element game elem (-> elem
+                                          (assoc :move? false)
+                                          (assoc :attacked? false)
                                           (e/coord (resolve-destination game trader elem))))})
 
 (defn- attack
@@ -32,7 +34,13 @@
   {:success true
    :attacked? true
    :game (-> game
+             (game/swap-element elem (assoc elem :attacked? true))
              (game/swap-element trader (trader/add-damage trader 30)))})
+
+(defn attacked?
+  "True if the bandid has attacked on this turn"
+  [bandit]
+  (:attacked? bandit))
 
 (defn- process
   "Processes the turn from given actions"
@@ -43,9 +51,12 @@
       (if (coord/adjacent-perpendicular? (e/coord trader) (e/coord elem))
         (attack game trader elem)
         (move game trader elem))
-      {:success true :game (game/swap-element game elem (assoc elem :move? true))})))
+      {:success true :game (game/swap-element game
+                                              elem
+                                              (-> (assoc elem :move? true)
+                                                  (assoc :attacked? false)))})))
 
-(defrecord Bandit [id coord energy move?]
+(defrecord Bandit [id coord energy move? attacked?]
   e/Element
   (id [elem] id)
   (priority [elem] 100)
@@ -58,5 +69,5 @@
 (defn create
   "Creates a new Bandit"
   [coord]
-  (->Bandit (gensym) coord 100 false))
+  (->Bandit (gensym) coord 100 false false))
 
