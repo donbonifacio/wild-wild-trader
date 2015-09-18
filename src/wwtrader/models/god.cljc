@@ -10,16 +10,28 @@
 (defn add-random-enemy
   "Adds a random enemy"
   [game]
-  (if (= 0 (mod (game/turn game) 20))
-    (game/register game (bandit/create (game/random-empty-coord game)))
-    game))
+  (game/register game (bandit/create (game/random-empty-coord game))))
+
+(defn add-random-enemies
+  "Adds several enemies"
+  [game]
+  (let [turn (game/turn game)]
+    (if (= 0 (mod turn 10))
+      (loop [n 3 #_(/ turn 10)
+             game game]
+        (if (<= n 0)
+          game
+          (recur
+            (- n 1)
+            (game/register game (bandit/create (game/random-empty-coord game))))))
+      game)))
 
 (defn- process
   "Processes the turn from given actions"
   [elem result]
   {:success true :game (-> (:game result)
                            (game/inc-turn)
-                           (add-random-enemy))})
+                           (add-random-enemies))})
 
 (defrecord God [id]
   e/Element
