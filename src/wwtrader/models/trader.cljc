@@ -4,6 +4,7 @@
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.action :as action]
+            [wwtrader.models.enemy :as enemy]
             [wwtrader.models.game :as game]))
 
 (defn- interact
@@ -64,7 +65,7 @@
           {:success true :idle true :game game})
         (cleanup elem))))
 
-(defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken]
+(defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken attacked?]
   e/Element
   (id [elem] id)
   (priority [elem] 0)
@@ -82,7 +83,7 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 [] 3 5 100 (default-skills) 0))
+  (->Trader (gensym) coord 3 [] 3 5 100 (default-skills) 0 false))
 
 (defn cargo
   "Gets the trader's cargo"
@@ -137,14 +138,48 @@
   [trader]
   (:skills trader))
 
+(defn enemy-in-range
+  "Gets an enemy in range to attack, if any"
+  [action elem game]
+  (let [offset (:args action)
+        current-coord (e/coord elem)]
+    (loop [game game
+           current-coord (coord/offset current-coord offset)]
+      (let [current-element (game/at game current-coord)]
+        (cond
+          (enemy/enemy? current-element)
+            current-element
+          current-element
+            nil
+          :else
+            (let [next-coord (coord/offset current-coord offset)]
+              (when-not (game/invalid-destination? game next-coord)
+                (recur game next-coord))))))))
+
+(defn- attack
+  "Attackes another element"
+  [game elem enemy]
+  {:success true
+   :attacked? true
+   :game (-> (enemy/add-damage enemy game 100)
+             (game/swap-element elem (assoc elem :attacked? true)))})
+
+(defn attacked?
+  "True if the trader attacked on this turn"
+  [trader]
+  (:attacked? trader))
+
 (defmethod process-action :move [action elem game]
   (let [current-coord (e/coord elem)
+        enemy (enemy-in-range action elem game)
         new-coord (coord/offset current-coord (:args action))]
     (cond
       (<= (energy elem) 0)
         {:success false :error :no-energy :game game :pos current-coord}
       (game/invalid-destination? game new-coord)
         {:success false :error :invalid-destination :game game :pos current-coord}
+      enemy
+        (attack game elem enemy)
       (game/at game new-coord)
         (assoc (interact game elem new-coord) :pos current-coord)
       :else

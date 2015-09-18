@@ -26,5 +26,5 @@
   at this left"
   [other-create]
   (-> (game/create 3 3)
-      (game/register (other-create (coord/create 2 1)))
+      (game/register (other-create coord/c2-1))
       (game/register (trader/create coord/c1-1))))

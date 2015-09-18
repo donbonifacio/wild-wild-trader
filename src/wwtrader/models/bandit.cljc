@@ -4,6 +4,7 @@
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.action :as action]
+            [wwtrader.models.enemy :as enemy]
             [wwtrader.models.trader :as trader]
             [wwtrader.models.game :as game]))
 
@@ -56,7 +57,14 @@
                                               (-> (assoc elem :move? true)
                                                   (assoc :attacked? false)))})))
 
+(defn- add-damage
+  "Adds damage to the bandit"
+  [bandit game damage]
+  (game/purge game bandit))
+
 (defrecord Bandit [id coord energy move? attacked?]
+  enemy/Enemy
+  (add-damage [enemy game damage] (add-damage enemy game damage))
   e/Element
   (id [elem] id)
   (priority [elem] 100)
