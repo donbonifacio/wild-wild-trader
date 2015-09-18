@@ -54,9 +54,11 @@
   (raw-render trader {}
     [:div "Trader"
      (let [damage (trader/damage-taken trader)]
-       (if (not= 0 damage)
+       (when (not= 0 damage)
          [:div {:style {:color "red"}}
-          "-" damage]))]))
+          "-" damage]))
+     (when (trader/attacked? trader)
+       [:div {:style {:color "pink"}} "shoot!"])]))
 
 (defmethod render-element market/Market [market]
   (raw-render market

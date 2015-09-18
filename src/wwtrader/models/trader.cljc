@@ -48,7 +48,9 @@
   [result elem]
   (let [game (:game result)
         elem (game/at game (:pos result))
-        trader (assoc elem :damage-taken 0)]
+        trader (-> elem
+                   (assoc :damage-taken 0)
+                   (assoc :attacked? false))]
     (if elem
       (assoc result :game (-> game
                               (game/swap-element elem trader)))

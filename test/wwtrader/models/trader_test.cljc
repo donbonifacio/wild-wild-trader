@@ -1,6 +1,7 @@
 (ns wwtrader.models.trader-test
   (:require
     [wwtrader.models.trader :as trader]
+    [wwtrader.models.element :as e]
     [wwtrader.models.game :as game]
     [wwtrader.models.bandit :as bandit]
     [wwtrader.models.action :as action]
@@ -25,4 +26,12 @@
         trader (first (game-loop/turn-elements game))]
     (is (:success result))
     (is (not (game/at game coord/c2-1)))
-    (is (trader/attacked? trader))))
+    (is (trader/attacked? trader))
+
+    (testing "move to enemy position"
+      (let [result (game-loop/process-turn game)
+            game (:game result)
+            trader (first (game-loop/turn-elements game))]
+        (is (:success result))
+        (is (= coord/c2-1 (e/coord trader)))
+        (is (not (trader/attacked? trader)))))))
