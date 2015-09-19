@@ -7,8 +7,12 @@
     [wwtrader.models.coordinate :as coord]
     [wwtrader.models.action :as action]
     [wwtrader.game-builds :as game-builds]
+    [wwtrader.models.element-tester :as element-tester]
     #?(:clj [clojure.test :refer [deftest testing is run-tests]]
        :cljs [cljs.test :refer-macros [deftest testing is run-tests]])))
+
+(deftest acts-as-an-element
+  (element-tester/acts-as-element (supply-farm/create coord/c1-1)))
 
 (deftest trader-interact-with-supply-farm
   (let [game (-> (game-builds/player-left-to supply-farm/create)
