@@ -12,6 +12,7 @@
     [wwtrader.models.element :as element]
     [wwtrader.models.god :as god]
     [wwtrader.models.trader :as trader]
+    [wwtrader.models.obstacle :as obstacle]
     [wwtrader.models.market :as market]
     [wwtrader.models.resource-generator :as resource-generator]
     [wwtrader.models.supply-farm :as supply-farm]
@@ -49,6 +50,9 @@
 
 (defmethod render-element god/God [god]
   (comment "No render"))
+
+(defmethod render-element obstacle/Obstacle [obstacle]
+  (raw-render obstacle {:background-color "black"} ""))
 
 (defmethod render-element trader/Trader [trader]
   (raw-render trader {}

@@ -12,7 +12,7 @@
   (priority [elem] 100000)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
-  (process-turn [elem game] {:success true :game game})
+  (process-turn [elem result] {:success true :game (:game result)})
   (interact-with [elem other game] {:success true :game game}))
 
 (defn create

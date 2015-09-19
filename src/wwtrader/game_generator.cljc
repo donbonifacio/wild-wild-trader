@@ -8,6 +8,7 @@
             [wwtrader.models.market :as market]
             [wwtrader.models.resource-generator :as resource-generator]
             [wwtrader.models.supply-farm :as supply-farm]
+            [wwtrader.models.obstacle :as obstacle]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
 
@@ -16,8 +17,11 @@
   []
   (-> (game/create 8 8)
       (game/register (god/create))
-      (god/add-random-enemy)
+      (game/register (obstacle/create coord/c2-3 :mountain))
+      (game/register (obstacle/create coord/c2-4 :mountain))
+      (game/register (obstacle/create coord/c6-1 :mountain))
       (game/register (market/create coord/c5-1))
       (game/register (supply-farm/create coord/c1-6))
       (game/register (resource-generator/create coord/c7-7))
-      (game/register (trader/create coord/c2-2))))
+      (game/register (trader/create coord/c2-2))
+      (god/add-random-enemy)))
