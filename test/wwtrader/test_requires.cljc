@@ -8,6 +8,7 @@
             [wwtrader.game-loop-test]
             [wwtrader.models.market-test]
             [wwtrader.models.obstacle-test]
+            [wwtrader.models.obstacle-with-line-of-sight-test]
             [wwtrader.models.supply-farm-test]
             [wwtrader.models.resource-generator-test]))
 

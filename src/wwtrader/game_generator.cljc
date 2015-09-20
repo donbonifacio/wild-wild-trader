@@ -9,6 +9,7 @@
             [wwtrader.models.resource-generator :as resource-generator]
             [wwtrader.models.supply-farm :as supply-farm]
             [wwtrader.models.obstacle :as obstacle]
+            [wwtrader.models.obstacle-with-line-of-sight :as visibility-obstacle]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
 
@@ -17,6 +18,9 @@
   []
   (-> (game/create 8 8)
       (game/register (god/create))
+      (game/register (visibility-obstacle/create coord/c4-5 :water))
+      (game/register (visibility-obstacle/create coord/c5-5 :water))
+      (game/register (visibility-obstacle/create coord/c6-5 :water))
       (game/register (obstacle/create coord/c2-3 :mountain))
       (game/register (obstacle/create coord/c2-4 :mountain))
       (game/register (obstacle/create coord/c6-1 :mountain))
