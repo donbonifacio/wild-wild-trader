@@ -13,6 +13,7 @@
     [wwtrader.models.god :as god]
     [wwtrader.models.trader :as trader]
     [wwtrader.models.obstacle :as obstacle]
+    [wwtrader.models.obstacle-with-line-of-sight :as visibility-obstacle]
     [wwtrader.models.market :as market]
     [wwtrader.models.resource-generator :as resource-generator]
     [wwtrader.models.supply-farm :as supply-farm]
@@ -53,6 +54,9 @@
 
 (defmethod render-element obstacle/Obstacle [obstacle]
   (raw-render obstacle {:background-color "black"} ""))
+
+(defmethod render-element visibility-obstacle/ObstacleWithLineOfSight [obstacle]
+  (raw-render obstacle {:background-color "blue" :color "blue"} ""))
 
 (defmethod render-element trader/Trader [trader]
   (raw-render trader {}
