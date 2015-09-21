@@ -6,7 +6,7 @@
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
 
-(defrecord ObstacleWithLineOfSight [id coord visual]
+(defrecord ObstacleWithLineOfSight [id coord visual can-see-over?]
   e/Element
   (id [elem] id)
   (priority [elem] 100000)
@@ -20,4 +20,4 @@
   ([coord]
    (create coord :water))
   ([coord visual]
-   (->ObstacleWithLineOfSight (gensym) coord visual)))
+   (->ObstacleWithLineOfSight (gensym) coord visual true)))

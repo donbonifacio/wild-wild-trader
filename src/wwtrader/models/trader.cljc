@@ -140,6 +140,11 @@
   [trader]
   (:skills trader))
 
+(defn opaque?
+  "True if the trader can't see through the element"
+  [elem]
+  (not (:can-see-over? elem)))
+
 (defn enemy-in-range
   "Gets an enemy in range to attack, if any"
   [action elem game]
@@ -151,7 +156,7 @@
         (cond
           (enemy/enemy? current-element)
             current-element
-          current-element
+          (and current-element (opaque? current-element))
             nil
           :else
             (let [next-coord (coord/offset current-coord offset)]
