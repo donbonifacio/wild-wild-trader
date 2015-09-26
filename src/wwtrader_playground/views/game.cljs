@@ -7,6 +7,7 @@
     [wwtrader.game-loop :as game-loop]
     [wwtrader.models.game :as game]
     [wwtrader.models.bandit :as bandit]
+    [wwtrader.models.desperado :as desperado]
     [wwtrader.models.action :as action]
     [wwtrader.models.coordinate :as coord]
     [wwtrader.models.element :as element]
@@ -74,6 +75,17 @@
                :color "blue"
                :border-color "blue"}
               "Market"))
+
+(defmethod render-element desperado/Desperado [desperado]
+  (let [color "purple"]
+    (raw-render desperado
+                {:border "1px dashed"
+                 :color color
+                 :font-size "12px"
+                 :border-color color}
+                [:div "Desperado" (when (desperado/attacked? desperado)
+                                    [:div {:style {:color "red"}}
+                                     "Shoot!"])])))
 
 (defmethod render-element bandit/Bandit [bandit]
   (let [color "orange"]

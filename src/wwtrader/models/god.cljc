@@ -4,13 +4,22 @@
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.trader :as trader]
             [wwtrader.models.bandit :as bandit]
+            [wwtrader.models.desperado :as desperado]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
+
+(defn- random-enemy
+  "Returns a random enemy type"
+  []
+  (let [lucky (rand-int 2)]
+    (case lucky
+      0 desperado/create
+      bandit/create)))
 
 (defn add-random-enemy
   "Adds a random enemy"
   [game]
-  (game/register game (bandit/create (game/random-empty-coord game))))
+  (game/register game ((random-enemy) (game/random-empty-coord game))))
 
 (defn add-random-enemies
   "Adds several enemies"
@@ -23,7 +32,7 @@
           game
           (recur
             (- n 1)
-            (game/register game (bandit/create (game/random-empty-coord game))))))
+            (game/register game ((random-enemy) (game/random-empty-coord game))))))
       game)))
 
 (defn- process
