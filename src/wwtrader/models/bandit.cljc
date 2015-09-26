@@ -8,11 +8,6 @@
             [wwtrader.models.trader :as trader]
             [wwtrader.models.game :as game]))
 
-(defn- interact
-  "Interacts with another element"
-  [game elem new-coord]
-  game)
-
 (defn- resolve-destination
   "Finds the next coordinate to move to"
   [game trader elem]
@@ -20,7 +15,7 @@
         sorted (coord/sort-by-distance (e/coord trader) possible)]
     (first sorted)))
 
-(defn- move
+(defn move
   "Moves the bandit"
   [game trader elem]
   {:success true
@@ -29,7 +24,7 @@
                                           (assoc :attacked? false)
                                           (e/coord (resolve-destination game trader elem))))})
 
-(defn- attack
+(defn attack
   "Attacks the bandit"
   [game trader elem]
   {:success true
@@ -57,7 +52,7 @@
                                               (-> (assoc elem :move? true)
                                                   (assoc :attacked? false)))})))
 
-(defn- add-damage
+(defn add-damage
   "Adds damage to the bandit"
   [bandit game damage]
   (game/purge game bandit))
