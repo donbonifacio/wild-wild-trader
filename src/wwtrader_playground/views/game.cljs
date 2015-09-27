@@ -8,6 +8,7 @@
     [wwtrader.models.game :as game]
     [wwtrader.models.bandit :as bandit]
     [wwtrader.models.desperado :as desperado]
+    [wwtrader.models.burglar :as burglar]
     [wwtrader.models.action :as action]
     [wwtrader.models.coordinate :as coord]
     [wwtrader.models.element :as element]
@@ -86,6 +87,17 @@
                 [:div "Desperado" (when (desperado/attacked? desperado)
                                     [:div {:style {:color "red"}}
                                      "Shoot!"])])))
+
+(defmethod render-element burglar/Burglar [burglar]
+  (let [color "gray"]
+    (raw-render burglar
+                {:border "1px dashed"
+                 :color color
+                 :font-size "12px"
+                 :border-color color}
+                [:div "Burglar" (when (burglar/attacked? desperado)
+                                        [:div {:style {:color "red"}}
+                                         "Shoot!"])])))
 
 (defmethod render-element bandit/Bandit [bandit]
   (let [color "orange"]
