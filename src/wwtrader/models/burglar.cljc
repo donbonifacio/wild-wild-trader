@@ -20,7 +20,7 @@
   {:success true
    :attacked? true
    :game (-> game
-             (game/swap-element elem (assoc elem :attacked? true))
+             (game/purge elem)
              (game/swap-element trader (trader/clear-cargo trader)))})
 
 

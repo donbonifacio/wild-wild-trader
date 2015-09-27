@@ -19,11 +19,17 @@
 
 (deftest clear-trader-cargo
   (let [game (game-builds/player-left-to burglar/create)
+        trader (game/at game coord/c1-1)
+        game (game/swap-element game trader (trader/add-cargo trader "something"))
+        original-trader (game/at game coord/c1-1)
+
         result (game-loop/process-turn game)
         game (:game result)
-        trader (game/at game coord/c2-1)
-        burglar (game/at game coord/c1-1)]
+        trader (game/at game coord/c1-1)
+        burglar (game/at game coord/c2-1)]
     (is trader)
+    (is (not= [] (trader/cargo original-trader)))
+    (is (= [] (trader/cargo trader)))
     (is (not burglar))
     (is (:success result))))
 
