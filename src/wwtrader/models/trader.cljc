@@ -107,6 +107,11 @@
   [trader item]
   (assoc trader :cargo (remove #(= % item) (:cargo trader))))
 
+(defn clear-cargo
+  "Removes all cargo from trader"
+  [trader]
+  (assoc trader :cargo []))
+
 (defn remove-cargo-once
   "Removes a single cargo item"
   [trader item]

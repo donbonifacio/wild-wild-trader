@@ -3,6 +3,8 @@
             [wwtrader.models.county-test]
             [wwtrader.models.trader-test]
             [wwtrader.models.bandit-test]
+            [wwtrader.models.desperado-test]
+            [wwtrader.models.burglar-test]
             [wwtrader.models.game-test]
             [wwtrader.models.god-test]
             [wwtrader.game-loop-test]
