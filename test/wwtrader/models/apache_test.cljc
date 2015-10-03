@@ -24,28 +24,22 @@
 
         result1 (game-loop/process-turn game)
         result2 (game-loop/process-turn (:game result1))
-        result3 (game-loop/process-turn (:game result2))
-        result4 (game-loop/process-turn (:game result3))]
+        result3 (game-loop/process-turn (:game result2))]
 
     (is (:success result1))
     (let [apache (game/at (:game result1) coord/c2-1)
           trader (game/at (:game result1) coord/c1-1)]
       (is apache)
-      (is (= 3 (:energy apache)))
+      (is (= 2 (:energy apache)))
       (is (= 100 (:energy trader))))
 
     (is (:success result2))
     (let [apache (game/at (:game result2) coord/c2-1)
           trader (game/at (:game result2) coord/c1-1)]
       (is apache)
-      (is (= 2 (:energy apache)))
+      (is (= 1 (:energy apache)))
       (= 100 (:energy trader)))
 
     (is (:success result3))
     (let [apache (game/at (:game result3) coord/c2-1)]
-      (is apache)
-      (is (= 1 (:energy apache))))
-
-    (is (:success result4))
-    (let [apache (game/at (:game result4) coord/c2-1)]
       (is (not apache)))))

@@ -8,6 +8,7 @@
     [wwtrader.models.game :as game]
     [wwtrader.models.bandit :as bandit]
     [wwtrader.models.desperado :as desperado]
+    [wwtrader.models.apache :as apache]
     [wwtrader.models.burglar :as burglar]
     [wwtrader.models.action :as action]
     [wwtrader.models.coordinate :as coord]
@@ -99,6 +100,16 @@
                                         [:div {:style {:color "red"}}
                                          "Shoot!"])])))
 
+(defmethod render-element apache/Apache [apache]
+  (let [color "chocolate"]
+    (raw-render apache
+                {:border "1px dashed"
+                 :color color
+                 :font-size "12px"
+                 :border-color color}
+                [:div "Apache" (when (apache/attacked? apache)
+                                        [:div {:style {:color "red"}}
+                                         "Shoot!"])])))
 (defmethod render-element bandit/Bandit [bandit]
   (let [color "orange"]
     (raw-render bandit

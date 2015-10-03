@@ -49,5 +49,5 @@
 (defn create
   "Creates a new Desperado"
   [coord]
-  (->Apache (gensym) coord 4 false))
+  (->Apache (gensym) coord 3 false))
 
