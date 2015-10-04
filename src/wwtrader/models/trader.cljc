@@ -85,7 +85,7 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 [] 3 5 100 (default-skills) 0 false))
+  (->Trader (gensym) coord 3 [] 9 5 100 (default-skills) 0 false))
 
 (defn cargo
   "Gets the trader's cargo"
