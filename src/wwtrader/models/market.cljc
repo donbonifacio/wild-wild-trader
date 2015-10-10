@@ -18,7 +18,7 @@
         all-items (trader/cargo trader)
         wanted-items (filter #(= % resource) all-items)
         nitems (count wanted-items)
-        money (* nitems 1)]
+        money (+ 1 (- (* nitems nitems) nitems))]
     (if (seq wanted-items)
       (let [new-trader (trader/remove-items-for-money trader resource money)]
         {:success true :sold nitems :money money :game (game/swap-element game trader new-trader)})
