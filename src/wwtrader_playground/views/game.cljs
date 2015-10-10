@@ -96,7 +96,7 @@
                  :color color
                  :font-size "12px"
                  :border-color color}
-                [:div "Burglar" (when (burglar/attacked? desperado)
+                [:div "Burglar" (when (burglar/attacked? burglar)
                                         [:div {:style {:color "red"}}
                                          "Shoot!"])])))
 

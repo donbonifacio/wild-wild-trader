@@ -7,6 +7,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [org.clojure/tools.nrepl "0.2.11"]
                  [reagent "0.5.1"]
+                 [mvxcvi/puget "0.8.1"]
                  [secretary "1.2.3"]]
 
   :profiles {
