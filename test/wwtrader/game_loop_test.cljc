@@ -21,7 +21,7 @@
           moved-trader (game/at game expected-coord)]
       (is (not (game/at game coord/c1-1)))
       (is (game/at game expected-coord))
-      (is (< (trader/energy moved-trader) (trader/energy trader))))))
+      (is (= (trader/energy moved-trader) (trader/energy trader))))))
 
 (deftest movement
   (move-test action/up coord/c1-0)

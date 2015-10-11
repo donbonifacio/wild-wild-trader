@@ -40,7 +40,6 @@
   "Processes movement for the trader"
   [trader new-coord]
   (-> trader
-      (take-energy 2)
       (e/coord new-coord)))
 
 (defn- cleanup
@@ -186,8 +185,6 @@
         enemy (enemy-in-range action elem game)
         new-coord (coord/offset current-coord (:args action))]
     (cond
-      (<= (energy elem) 0)
-        {:success false :error :no-energy :game game :pos current-coord}
       (game/invalid-destination? game new-coord)
         {:success false :error :invalid-destination :game game :pos current-coord}
       enemy
