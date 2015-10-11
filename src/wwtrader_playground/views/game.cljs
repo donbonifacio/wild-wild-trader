@@ -216,6 +216,7 @@
      [:h3 "Trader"]
      [:ul
       [:li "Money " (trader/money trader) "$"]
+      [:li "Hitpoints " (trader/hitpoints trader)]
       [:li "Energy " (trader/energy trader)]]
      [:h6 "Skills"]
      [:ul

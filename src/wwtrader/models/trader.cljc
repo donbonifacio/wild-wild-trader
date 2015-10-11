@@ -13,6 +13,13 @@
   (-> (game/at game new-coord)
       (e/interact-with elem game)))
 
+(defn hitpoints
+  "Handles the trader's hitpoints"
+  ([trader]
+   (:hitpoints trader))
+  ([trader new-hitpoints]
+   (assoc trader :hitpoints new-hitpoints)))
+
 (defn energy
   "Handles the trader's energy"
   ([trader]
@@ -28,8 +35,9 @@
 (defn add-damage
   "Adds damage to the trader"
   [trader taken-energy]
-  (-> (take-energy trader taken-energy)
-      (update :damage-taken + taken-energy)))
+  (-> trader
+      (update :hitpoints dec)
+      (update :damage-taken inc)))
 
 (defn damage-taken
   "Damage taken on the turn"
@@ -185,6 +193,8 @@
         enemy (enemy-in-range action elem game)
         new-coord (coord/offset current-coord (:args action))]
     (cond
+      (<= (:hitpoints elem) 0)
+        {:success false :error :game-over :game game :pos current-coord}
       (game/invalid-destination? game new-coord)
         {:success false :error :invalid-destination :game game :pos current-coord}
       enemy

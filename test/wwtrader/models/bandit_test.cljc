@@ -32,7 +32,7 @@
             foe (first (game/find-elements game bandit/bandit-type))]
         (is (bandit/attacked? foe))
         (is (> (trader/damage-taken trader) 0))
-        (is (< (trader/energy trader) 100)))
+        (is (< (trader/hitpoints trader) 3)))
 
       (testing "trader cleanup"
         (let [result (game-loop/process-turn game)
