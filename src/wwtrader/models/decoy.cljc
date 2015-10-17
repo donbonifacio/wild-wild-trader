@@ -18,7 +18,9 @@
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem result] {:success true :game (:game result)})
-  (interact-with [elem other game] {:success true :game game}))
+  (interact-with [elem trader game]
+    {:success true :game (-> (game/purge game elem)
+                             (game/swap-element trader (trader/give-money trader value)))}))
 
 (def elem-type Decoy)
 
