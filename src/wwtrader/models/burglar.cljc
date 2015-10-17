@@ -2,6 +2,7 @@
   wwtrader.models.burglar
   "Implementation for the burglar enemy"
   (:require [wwtrader.models.element :as e]
+            [wwtrader.models.target :as t]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.action :as action]
             [wwtrader.models.enemy :as enemy]
@@ -21,7 +22,7 @@
    :attacked? true
    :game (-> game
              (game/purge elem)
-             (game/swap-element trader (trader/clear-cargo trader)))})
+             (->> (t/stolen trader elem)))})
 
 (defn- process
   "Processes the turn from given actions"

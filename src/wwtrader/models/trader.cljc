@@ -75,11 +75,15 @@
           {:success true :idle true :game game})
         (cleanup elem))))
 
+(declare clear-cargo)
+
 (defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken attacked?]
   t/Target
   (target-value [elem] 1)
   (take-damage [elem other game]
     (game/swap-element game elem (add-damage elem)))
+  (stolen [elem thief game]
+    (game/swap-element game elem (clear-cargo elem)))
   e/Element
   (id [elem] id)
   (priority [elem] 1)

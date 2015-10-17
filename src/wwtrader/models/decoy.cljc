@@ -11,6 +11,7 @@
   t/Target
   (target-value [elem] value)
   (take-damage [elem other game] (game/purge game elem))
+  (stolen [elem thief game] (game/purge game elem))
   e/Element
   (id [elem] id)
   (priority [elem] 5000)
