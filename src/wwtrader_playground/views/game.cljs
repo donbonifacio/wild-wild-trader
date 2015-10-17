@@ -9,6 +9,7 @@
     [wwtrader.models.bandit :as bandit]
     [wwtrader.models.desperado :as desperado]
     [wwtrader.models.apache :as apache]
+    [wwtrader.models.decoy :as decoy]
     [wwtrader.models.burglar :as burglar]
     [wwtrader.models.action :as action]
     [wwtrader.models.coordinate :as coord]
@@ -88,6 +89,15 @@
                 [:div "Desperado" (when (desperado/attacked? desperado)
                                     [:div {:style {:color "red"}}
                                      "Shoot!"])])))
+
+(defmethod render-element decoy/elem-type [decoy]
+  (let [color "green"]
+    (raw-render decoy
+                {:border "1px solid"
+                 :color color
+                 :font-size "12px"
+                 :border-color color}
+                [:div "Decoy" [:br] (element/target-value decoy) "$"])))
 
 (defmethod render-element burglar/Burglar [burglar]
   (let [color "gray"]

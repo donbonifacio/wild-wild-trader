@@ -7,17 +7,19 @@
             [wwtrader.models.desperado :as desperado]
             [wwtrader.models.apache :as apache]
             [wwtrader.models.burglar :as burglar]
+            [wwtrader.models.decoy :as decoy]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
 
 (defn- random-enemy
   "Returns a random enemy type"
   []
-  (let [lucky (rand-int 4)]
+  (let [lucky (rand-int 5)]
     (case lucky
       0 desperado/create
       1 burglar/create
       2 apache/create
+      3 decoy/create
       bandit/create)))
 
 (defn add-random-enemy
