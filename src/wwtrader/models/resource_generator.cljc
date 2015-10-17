@@ -42,8 +42,8 @@
                      (game/swap-element generator (reset generator))
                      (game/swap-element other trader))]
         {:success true :got-resource resource :generator-empty? false :game game})
-      {:success true :note :cargo-full :generator-empty? false :game game})
-    {:success true :generator-empty? true :game game}))
+      {:success false :note :cargo-full :generator-empty? false :game game})
+    {:success false :generator-empty? true :game game}))
 
 (defrecord ResourceGenerator [id coord resource available? cooldown generation-time]
   e/Element

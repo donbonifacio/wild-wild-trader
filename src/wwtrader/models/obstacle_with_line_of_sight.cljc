@@ -13,7 +13,7 @@
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem result] {:success true :game (:game result)})
-  (interact-with [elem other game] {:success true :game game}))
+  (interact-with [elem other game] {:success false :game game}))
 
 (defn create
   "Creates a new ObstacleWithLineOfSight"

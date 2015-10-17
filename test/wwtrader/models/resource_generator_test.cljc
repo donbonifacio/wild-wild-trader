@@ -28,7 +28,8 @@
 
     (testing "resource generated again"
       (let [new-generator (assoc generator :generation-time 1)
-            game (game/swap-element new-game generator new-generator)
+            game (-> (game/swap-element new-game generator new-generator)
+                     (game/player-action action/left))
             result (game-loop/process-turn game)
             generator (game/at (:game result) coord/c2-1)]
         (is (= true (resource-generator/available? generator)))))))
