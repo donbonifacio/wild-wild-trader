@@ -2,6 +2,7 @@
   wwtrader.models.game
   "Represents a complete game with all the associated data"
   (:require [wwtrader.models.element :as e]
+            [wwtrader.models.target :as t]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.county :as county]))
 
@@ -88,12 +89,13 @@
   [game elem-type]
   (filter #(instance? elem-type %) (elements game)))
 
-(def element-value-sorter (comp - e/target-value))
+(def element-value-sorter (comp - t/target-value))
 
 (defn find-target
   "Finds the current element that all the foes should target"
   [game]
   (->> (elements game)
+       (filter #(satisfies? t/Target %))
        (sort-by element-value-sorter)
        (first)))
 

@@ -2,6 +2,7 @@
   wwtrader.models.bandit
   "Implementation for the bandit enemy"
   (:require [wwtrader.models.element :as e]
+            [wwtrader.models.target :as t]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.action :as action]
             [wwtrader.models.enemy :as enemy]
@@ -25,13 +26,13 @@
                                           (e/coord (resolve-destination game trader elem))))})
 
 (defn attack
-  "Attacks the bandit"
-  [game trader elem]
+  "Attacks the target"
+  [game target elem]
   {:success true
    :attacked? true
    :game (-> game
              (game/swap-element elem (assoc elem :attacked? true))
-             (game/swap-element trader (trader/add-damage trader 30)))})
+             (->> (t/take-damage target elem)))})
 
 (defn attacked?
   "True if the bandid has attacked on this turn"
@@ -63,7 +64,6 @@
   e/Element
   (id [elem] id)
   (priority [elem] 100)
-  (target-value [elem] 0)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem game] (process elem game)))

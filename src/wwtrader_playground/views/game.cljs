@@ -14,6 +14,7 @@
     [wwtrader.models.action :as action]
     [wwtrader.models.coordinate :as coord]
     [wwtrader.models.element :as element]
+    [wwtrader.models.target :as t]
     [wwtrader.models.god :as god]
     [wwtrader.models.trader :as trader]
     [wwtrader.models.obstacle :as obstacle]
@@ -97,7 +98,7 @@
                  :color color
                  :font-size "12px"
                  :border-color color}
-                [:div "Decoy" [:br] (element/target-value decoy) "$"])))
+                [:div "Decoy" [:br] (t/target-value decoy) "$"])))
 
 (defmethod render-element burglar/Burglar [burglar]
   (let [color "gray"]

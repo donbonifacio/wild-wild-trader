@@ -2,6 +2,7 @@
   wwtrader.models.trader
   "Represents an entity that has a cargo and moves things from places to places"
   (:require [wwtrader.models.element :as e]
+            [wwtrader.models.target :as t]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.action :as action]
             [wwtrader.models.enemy :as enemy]
@@ -34,7 +35,7 @@
 
 (defn add-damage
   "Adds damage to the trader"
-  [trader taken-energy]
+  [trader]
   (-> trader
       (update :hitpoints dec)
       (update :damage-taken inc)))
@@ -75,10 +76,13 @@
         (cleanup elem))))
 
 (defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken attacked?]
+  t/Target
+  (target-value [elem] 1)
+  (take-damage [elem other game]
+    (game/swap-element game elem (add-damage elem)))
   e/Element
   (id [elem] id)
   (priority [elem] 1)
-  (target-value [elem] 1)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem game] (process elem game)))
