@@ -210,7 +210,7 @@
    [:ul
     (map (fn [element]
            [:li {:key (element/id element)} (pr-str element)])
-         (game/elements game))]])
+         (game-loop/turn-elements game))]])
 
 (defn- get-page-data
   "Gets the page data given the global state"
