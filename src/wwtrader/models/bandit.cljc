@@ -63,6 +63,7 @@
   e/Element
   (id [elem] id)
   (priority [elem] 100)
+  (target-value [elem] 0)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem game] (process elem game)))

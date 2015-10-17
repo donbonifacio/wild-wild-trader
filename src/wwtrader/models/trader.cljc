@@ -77,7 +77,8 @@
 (defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken attacked?]
   e/Element
   (id [elem] id)
-  (priority [elem] 0)
+  (priority [elem] 1)
+  (target-value [elem] 1)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem game] (process elem game)))

@@ -2,6 +2,9 @@
   (:require
     [wwtrader.models.game :as game]
     [wwtrader.models.coordinate :as coord]
+    [wwtrader.models.trader :as trader]
+    [wwtrader.models.decoy :as decoy]
+    [wwtrader.game-builds :as game-builds]
     #?(:clj [clojure.test :refer [deftest testing is are run-tests]]
        :cljs [cljs.test :refer-macros [deftest testing is are run-tests]])))
 
@@ -32,3 +35,12 @@
     (is (game/random-empty-coord game))
     (is (game/random-empty-coord game))))
 
+(deftest find-targe-test
+  (testing "trader and enemy"
+    (let [game (game-builds/player-and-bandit)
+          target (game/find-target game)]
+      (is (instance? trader/elem-type target))))
+  (testing "trader and decoy"
+    (let [game (game-builds/player-left-to decoy/create)
+          target (game/find-target game)]
+      (is (instance? decoy/elem-type target)))))

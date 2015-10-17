@@ -88,6 +88,15 @@
   [game elem-type]
   (filter #(instance? elem-type %) (elements game)))
 
+(def element-value-sorter (comp - e/target-value))
+
+(defn find-target
+  "Finds the current element that all the foes should target"
+  [game]
+  (->> (elements game)
+       (sort-by element-value-sorter)
+       (first)))
+
 (defn possible-move?
   "Checks if it's possible to move to the given coordinate"
   [game coord]
