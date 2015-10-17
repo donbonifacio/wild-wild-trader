@@ -10,6 +10,7 @@
   e/Element
   (id [elem] id)
   (priority [elem] 100000)
+  (target-value [elem] 0)
   (coord [elem] coord)
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem result] {:success true :game (:game result)})

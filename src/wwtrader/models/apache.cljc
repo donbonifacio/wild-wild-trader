@@ -20,10 +20,10 @@
   (if (:attacked? elem)
     {:success true :game (game/swap-element (:game result) elem (assoc elem :attacked? false))}
     (let [game (:game result)
-          trader (first (game/find-elements game trader/elem-type))]
-      (if (coord/adjacent-perpendicular? (e/coord trader) (e/coord elem))
-        (bandit/attack game trader elem)
-        (bandit/move game trader elem)))))
+          target (game/find-target game)]
+      (if (coord/adjacent-perpendicular? (e/coord target) (e/coord elem))
+        (bandit/attack game target elem)
+        (bandit/move game target elem)))))
 
 (defn- add-damage
   "Adds damage to this apache"

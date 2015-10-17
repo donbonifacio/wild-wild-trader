@@ -9,4 +9,5 @@
   [e]
   (is e)
   (is (satisfies? element/Element e))
-  (is (element/id e)))
+  (is (element/id e))
+  (is (element/target-value e)))

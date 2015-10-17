@@ -23,15 +23,14 @@
              (game/purge elem)
              (game/swap-element trader (trader/clear-cargo trader)))})
 
-
 (defn- process
   "Processes the turn from given actions"
   [elem result]
   (let [game (:game result)
-        trader (first (game/find-elements game trader/elem-type))]
-    (if (coord/adjacent-perpendicular? (e/coord trader) (e/coord elem))
-      (attack game trader elem)
-      (bandit/move game trader elem))))
+        target (game/find-target game)]
+    (if (coord/adjacent-perpendicular? (e/coord target) (e/coord elem))
+      (attack game target elem)
+      (bandit/move game target elem))))
 
 (defrecord Burglar [id coord energy attacked?]
   enemy/Enemy

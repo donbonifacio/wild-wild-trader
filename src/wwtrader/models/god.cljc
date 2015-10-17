@@ -52,6 +52,7 @@
   e/Element
   (id [elem] id)
   (priority [elem] 10000)
+  (target-value [elem] 0)
   (coord [elem] nil)
   (coord [elem coord] elem)
   (process-turn [elem game] (process elem game))

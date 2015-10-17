@@ -42,11 +42,11 @@
   "Processes the turn from given actions"
   [elem result]
   (let [game (:game result)
-        trader (first (game/find-elements game trader/elem-type))]
+        target (game/find-target game)]
     (if (:move? elem)
-      (if (coord/adjacent-perpendicular? (e/coord trader) (e/coord elem))
-        (attack game trader elem)
-        (move game trader elem))
+      (if (coord/adjacent-perpendicular? (e/coord target) (e/coord elem))
+        (attack game target elem)
+        (move game target elem))
       {:success true :game (game/swap-element game
                                               elem
                                               (-> (assoc elem :move? true)
