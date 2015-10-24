@@ -24,7 +24,7 @@
              (game/purge elem)
              (->> (t/stolen trader elem)))})
 
-(defn- process
+(defn- process-turn
   "Processes the turn from given actions"
   [elem result]
   (let [game (:game result)
@@ -32,6 +32,11 @@
     (if (coord/adjacent-perpendicular? (e/coord target) (e/coord elem))
       (attack game target elem)
       (bandit/move game target elem))))
+
+(defn- process
+  "Processes the turn from given actions"
+  [elem result]
+  (bandit/process-if-alive elem result process-turn))
 
 (defrecord Burglar [id coord energy attacked?]
   enemy/Enemy

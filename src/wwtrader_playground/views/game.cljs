@@ -121,6 +121,7 @@
                 [:div "Apache" (when (apache/attacked? apache)
                                         [:div {:style {:color "red"}}
                                          "Shoot!"])])))
+
 (defmethod render-element bandit/Bandit [bandit]
   (let [color "orange"]
     (raw-render bandit

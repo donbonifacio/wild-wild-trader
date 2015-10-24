@@ -14,7 +14,7 @@
   [apache]
   (:attacked? apache))
 
-(defn- process
+(defn- process-turn
   "Processes the turn from given actions"
   [elem result]
   (if (:attacked? elem)
@@ -25,13 +25,18 @@
         (bandit/attack game target elem)
         (bandit/move game target elem)))))
 
+(defn- process
+  "Processes the turn from given actions"
+  [elem result]
+  (bandit/process-if-alive elem result process-turn))
+
 (defn- add-damage
   "Adds damage to this apache"
   [apache game damage]
   (let [new-apache (-> (update apache :energy dec)
                        (assoc :attacked? true))]
     (if (>= 0 (:energy new-apache))
-      (game/purge game apache)
+      (game/swap-element game apache (assoc new-apache :dead? true))
       (game/swap-element game apache new-apache))))
 
 (defrecord Apache [id coord energy attacked?]

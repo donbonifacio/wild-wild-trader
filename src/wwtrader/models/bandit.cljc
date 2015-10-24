@@ -39,8 +39,16 @@
   [bandit]
   (:attacked? bandit))
 
-(defn- process
-  "Processes the turn from given actions"
+(defn process-if-alive
+  "Verifies that the element is dead and removes it from the game. Calls
+  given process-fn otherwise"
+  [elem result process-fn]
+  (if (:dead? elem)
+    {:success true :game (game/purge (:game result) elem)}
+    (process-fn elem result)))
+
+(defn- process-turn
+  "Processes the actual turn logic"
   [elem result]
   (let [game (:game result)
         target (game/find-target game)]
@@ -53,10 +61,15 @@
                                               (-> (assoc elem :move? true)
                                                   (assoc :attacked? false)))})))
 
+(defn- process
+  "Processes the turn from given actions"
+  [elem result]
+  (process-if-alive elem result process-turn))
+
 (defn add-damage
   "Adds damage to the bandit"
   [bandit game damage]
-  (game/purge game bandit))
+  (game/swap-element game bandit (assoc bandit :dead? true :attacked? true)))
 
 (defrecord Bandit [id coord energy move? attacked?]
   enemy/Enemy
