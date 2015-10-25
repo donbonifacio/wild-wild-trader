@@ -5,6 +5,7 @@
     [cljs.core.async :refer [timeout <!]]
     [wwtrader-playground.state :as state]
     [wwtrader.game-loop :as game-loop]
+    [wwtrader.camera :as camera]
     [wwtrader.models.game :as game]
     [wwtrader.models.bandit :as bandit]
     [wwtrader.models.desperado :as desperado]
@@ -189,10 +190,9 @@
 (defn- board
   "Renders the game board"
   [game]
-  (let [county (game/county game)
-        sx (* cell-size (county/width county))
-        sy (* cell-size (county/height county))
-        context {}]
+  (let [sx (* cell-size (camera/width game))
+        sy (* cell-size (camera/height game))
+        context {:game game :camera-position (camera/position game)}]
     [:div.board {:style {:position "relative"
                          :width (str sx "px")
                          :height (str sy "px")
