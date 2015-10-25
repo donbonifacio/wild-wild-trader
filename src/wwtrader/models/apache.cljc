@@ -30,7 +30,7 @@
   [elem result]
   (bandit/process-if-alive elem result process-turn))
 
-(defn- add-damage
+(defn add-damage
   "Adds damage to this apache"
   [apache game damage]
   (let [new-apache (-> (update apache :energy dec)

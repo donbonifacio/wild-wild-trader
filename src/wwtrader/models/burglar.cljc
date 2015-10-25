@@ -8,6 +8,7 @@
             [wwtrader.models.enemy :as enemy]
             [wwtrader.models.trader :as trader]
             [wwtrader.models.bandit :as bandit]
+            [wwtrader.models.apache :as apache]
             [wwtrader.models.game :as game]))
 
 (defn attacked?
@@ -40,7 +41,7 @@
 
 (defrecord Burglar [id coord energy attacked?]
   enemy/Enemy
-  (add-damage [enemy game damage] (bandit/add-damage enemy game damage))
+  (add-damage [enemy game damage] (apache/add-damage enemy game damage))
   e/Element
   (id [elem] id)
   (priority [elem] 99)
@@ -53,5 +54,5 @@
 (defn create
   "Creates a new burglar"
   [coord]
-  (->Burglar (gensym) coord 100 false))
+  (->Burglar (gensym) coord 2 false))
 
