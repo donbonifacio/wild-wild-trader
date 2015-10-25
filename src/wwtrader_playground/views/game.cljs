@@ -107,9 +107,12 @@
                  :color color
                  :font-size "12px"
                  :border-color color}
-                [:div "Burglar" (when (burglar/attacked? burglar)
+                [:div "Burglar" (when (:robbed? burglar)
+                                        [:div {:style {:color "gray"}}
+                                         "Got you :)"])
+                                (when (:attacked? burglar)
                                         [:div {:style {:color "red"}}
-                                         "Shoot!"])])))
+                                         "Outch!"])])))
 
 (defmethod render-element apache/Apache [apache]
   (let [color "chocolate"]

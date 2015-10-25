@@ -28,11 +28,13 @@
 (defn- process-turn
   "Processes the turn from given actions"
   [elem result]
-  (let [game (:game result)
-        target (game/find-target game)]
-    (if (coord/adjacent-perpendicular? (e/coord target) (e/coord elem))
-      (attack game target elem)
-      (bandit/move game target elem))))
+  (if (:attacked? elem)
+    {:success true :game (game/swap-element (:game result) elem (assoc elem :attacked? false))}
+    (let [game (:game result)
+          target (game/find-target game)]
+      (if (coord/adjacent-perpendicular? (e/coord target) (e/coord elem))
+        (attack game target elem)
+        (bandit/move game target elem)))))
 
 (defn- process
   "Processes the turn from given actions"
