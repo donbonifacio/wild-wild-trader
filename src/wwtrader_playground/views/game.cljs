@@ -32,11 +32,11 @@
 
 (defmulti render-element
   "Renders the given element in HTML"
-  (fn [element] (type element)))
+  (fn [context element] (type element)))
 
 (defn- raw-render
   "Renders an element"
-  [elem specific-style specific-content]
+  [context elem specific-style specific-content]
   (let [pos (element/coord elem)
         id (element/id elem)
         x (coord/x pos)
@@ -54,17 +54,17 @@
      specific-content]))
 
 
-(defmethod render-element god/God [god]
+(defmethod render-element god/God [context god]
   (comment "No render"))
 
-(defmethod render-element obstacle/Obstacle [obstacle]
-  (raw-render obstacle {:background-color "black"} ""))
+(defmethod render-element obstacle/Obstacle [context obstacle]
+  (raw-render context obstacle {:background-color "black"} ""))
 
-(defmethod render-element visibility-obstacle/ObstacleWithLineOfSight [obstacle]
-  (raw-render obstacle {:background-color "blue" :color "blue"} ""))
+(defmethod render-element visibility-obstacle/ObstacleWithLineOfSight [context obstacle]
+  (raw-render context obstacle {:background-color "blue" :color "blue"} ""))
 
-(defmethod render-element trader/Trader [trader]
-  (raw-render trader {}
+(defmethod render-element trader/Trader [context trader]
+  (raw-render context trader {}
     [:div "Trader"
      (let [damage (trader/damage-taken trader)]
        (when (not= 0 damage)
@@ -73,16 +73,16 @@
      (when (trader/attacked? trader)
        [:div {:style {:color "pink"}} "shoot!"])]))
 
-(defmethod render-element market/Market [market]
-  (raw-render market
+(defmethod render-element market/Market [context market]
+  (raw-render context market
               {:border "1px solid"
                :color "blue"
                :border-color "blue"}
               "Market"))
 
-(defmethod render-element desperado/Desperado [desperado]
+(defmethod render-element desperado/Desperado [context desperado]
   (let [color "purple"]
-    (raw-render desperado
+    (raw-render context desperado
                 {:border "1px dashed"
                  :color color
                  :font-size "12px"
@@ -91,18 +91,18 @@
                                     [:div {:style {:color "red"}}
                                      "Shoot!"])])))
 
-(defmethod render-element decoy/elem-type [decoy]
+(defmethod render-element decoy/elem-type [context decoy]
   (let [color "green"]
-    (raw-render decoy
+    (raw-render context decoy
                 {:border "1px solid"
                  :color color
                  :font-size "12px"
                  :border-color color}
                 [:div "Decoy" [:br] (t/target-value decoy) "$"])))
 
-(defmethod render-element burglar/Burglar [burglar]
+(defmethod render-element burglar/Burglar [context burglar]
   (let [color "gray"]
-    (raw-render burglar
+    (raw-render context burglar
                 {:border "1px dashed"
                  :color color
                  :font-size "12px"
@@ -114,9 +114,9 @@
                                         [:div {:style {:color "red"}}
                                          "Outch!"])])))
 
-(defmethod render-element apache/Apache [apache]
+(defmethod render-element apache/Apache [context apache]
   (let [color "chocolate"]
-    (raw-render apache
+    (raw-render context apache
                 {:border "1px dashed"
                  :color color
                  :font-size "12px"
@@ -125,9 +125,9 @@
                                         [:div {:style {:color "red"}}
                                          "Shoot!"])])))
 
-(defmethod render-element bandit/Bandit [bandit]
+(defmethod render-element bandit/Bandit [context bandit]
   (let [color "orange"]
-    (raw-render bandit
+    (raw-render context bandit
                 {:border "1px dashed"
                  :color color
                  :font-size "14px"
@@ -136,20 +136,20 @@
                                  [:div {:style {:color "red"}}
                                   "Shoot!"])])))
 
-(defmethod render-element supply-farm/SupplyFarm [farm]
+(defmethod render-element supply-farm/SupplyFarm [context farm]
   (let [cost (supply-farm/cost farm)
         color "pink"]
-    (raw-render farm
+    (raw-render context farm
                 {:border "1px solid"
                  :color color
                  :font-size "14px"
                  :border-color color}
                 [:div "Supplies" [:br] (str cost "$")])))
 
-(defmethod render-element resource-generator/ResourceGenerator [generator]
+(defmethod render-element resource-generator/ResourceGenerator [context generator]
   (let [available? (resource-generator/available? generator)
         color (if available? "green" "black")]
-    (raw-render generator
+    (raw-render context generator
                 {:border "1px solid"
                  :color color
                  :border-color color}
@@ -191,12 +191,14 @@
   [game]
   (let [county (game/county game)
         sx (* cell-size (county/width county))
-        sy (* cell-size (county/height county))]
+        sy (* cell-size (county/height county))
+        context {}]
     [:div.board {:style {:position "relative"
                          :width (str sx "px")
                          :height (str sy "px")
                          :border "1px solid"}}
-     (map render-element (game-loop/turn-elements game))]
+     (map (partial render-element context)
+          (game-loop/turn-elements game))]
     ))
 
 (defn debug-info
