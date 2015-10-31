@@ -40,5 +40,7 @@
           [0 0] [4 4] action/down [[0 0] [7 7]])
   (verify "need to move down"
           [0 0] [4 5] action/down [[0 1] [7 8]])
+  (verify "need to move right"
+          [0 0] [5 3] action/right [[1 0] [8 7]])
   )
 

@@ -62,11 +62,14 @@
 
         d-left-x (- (coord/x focus-coord) (coord/x camera-left))
         d-left-y (- (coord/y focus-coord) (coord/y camera-left))
+        d-right-x (- (coord/x camera-right) (coord/x focus-coord))
         d-right-y (- (coord/y camera-right) (coord/y focus-coord))]
 
     (cond
       (and (action/moved-x? action) (< d-left-x margin))
         (move-camera game previous-camera [-1 0])
+      (and (action/moved-x? action) (< d-right-x margin))
+        (move-camera game previous-camera [1 0])
       (and (action/moved-y? action) (< d-left-y margin))
         (move-camera game previous-camera [0 -1])
       (and (action/moved-y? action) (< d-right-y margin))
