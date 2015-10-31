@@ -21,7 +21,7 @@
   "Verifies an assertion on camera movement"
   [msg [cx cy] [fx fy] action [[lx ly] [rx ry]]]
   (testing msg
-    (let [game (-> (game/create 8 8)
+    (let [game (-> (game/create (* 8 3) (* 8 3))
                    (game/player-action action)
                    (camera/set-camera (coord/create cx cy))
                    (game/register (trader/create (coord/create fx fy))))
@@ -37,6 +37,8 @@
   (verify "on the top left, needs to move 1 to top"
           [0 1] [1 3] action/up [[0 0] [7 7]])
   (verify "middle, no need to move"
-          [0 0] [4 5] action/down [[0 0] [7 7]])
+          [0 0] [4 4] action/down [[0 0] [7 7]])
+  (verify "need to move down"
+          [0 0] [4 5] action/down [[0 1] [7 8]])
   )
 

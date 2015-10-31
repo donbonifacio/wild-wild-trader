@@ -46,7 +46,8 @@
   [elem result]
   {:success true :game (-> (:game result)
                            (game/inc-turn)
-                           #_(add-random-enemies))})
+                           (add-random-enemies))})
+
 
 (defrecord God [id]
   e/Element
