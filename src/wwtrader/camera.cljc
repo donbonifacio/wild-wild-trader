@@ -3,6 +3,7 @@
   "Manages the camera for the game"
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.coordinate :as coord]
+            [wwtrader.models.action :as action]
             [wwtrader.models.trader :as trader]
             [wwtrader.models.game :as game]))
 
@@ -49,21 +50,23 @@
 (defn process
   "Gets the positions of the current camera"
   [game]
-  {:pre [(:camera game)]}
+  {:pre [(and (:camera game)
+              (:player-action game))]}
   (let [previous-camera (:camera game)
         camera-left (:left previous-camera)
         camera-right (:right previous-camera)
 
         focus-elem (focus-element game)
         focus-coord (e/coord focus-elem)
+        action (:player-action game)
 
         d-left-x (- (coord/x focus-coord) (coord/x camera-left))
-        d-left-y (- (coord/x focus-coord) (coord/x camera-left))]
+        d-left-y (- (coord/y focus-coord) (coord/y camera-left))]
 
     (cond
-      (< d-left-x margin)
+      (and (action/moved-x? action) (< d-left-x margin))
         (move-camera game previous-camera [-1 0])
-      (< d-left-y margin)
+      (and (action/moved-y? action) (< d-left-y margin))
         (move-camera game previous-camera [0 -1])
       :else
         previous-camera)))

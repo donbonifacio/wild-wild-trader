@@ -19,9 +19,10 @@
 
 (defn- verify
   "Verifies an assertion on camera movement"
-  [msg [cx cy] [fx fy] [[lx ly] [rx ry]]]
+  [msg [cx cy] [fx fy] action [[lx ly] [rx ry]]]
   (testing msg
     (let [game (-> (game/create 8 8)
+                   (game/player-action action)
                    (camera/set-camera (coord/create cx cy))
                    (game/register (trader/create (coord/create fx fy))))
           camera-position (camera/process game)]
@@ -30,7 +31,12 @@
 
 (deftest camera-process-test
   (verify "on the top left, no need to move"
-          [0 0] [1 1] [[0 0] [7 7]])
+          [0 0] [1 1] action/left [[0 0] [7 7]])
   (verify "on the top left, needs to move 1 to left"
-          [1 0] [3 1] [[0 0] [7 7]]))
+          [1 0] [3 1] action/left [[0 0] [7 7]])
+  (verify "on the top left, needs to move 1 to top"
+          [0 1] [1 3] action/up [[0 0] [7 7]])
+  (verify "middle, no need to move"
+          [0 0] [4 5] action/down [[0 0] [7 7]])
+  )
 

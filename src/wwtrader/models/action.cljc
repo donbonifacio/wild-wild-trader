@@ -10,3 +10,15 @@
 (def down (map->Action {:action-type :move :args [0 1]}))
 
 (def take-supplies (map->Action {:action-type :take-supplies}))
+
+(defn moved-x?
+  "True if the given action translated to moving on x"
+  [action]
+  (and (= :move (:action-type action))
+       (not= 0 (first (:args action)))))
+
+(defn moved-y?
+  "True if the given action translated to moving on x"
+  [action]
+  (and (= :move (:action-type action))
+       (not= 0 (last (:args action)))))
