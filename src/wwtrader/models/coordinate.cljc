@@ -76,3 +76,5 @@
 (def c6-1 (create 6 1))
 (def c6-5 (create 6 5))
 (def c7-7 (create 7 7))
+(def c8-8 (create 8 8))
+(def c9-9 (create 9 9))
