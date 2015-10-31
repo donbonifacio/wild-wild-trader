@@ -192,7 +192,7 @@
   [game]
   (let [sx (* cell-size (camera/width game))
         sy (* cell-size (camera/height game))
-        context {:game game :camera-position (camera/position game)}]
+        context {:game game}]
     [:div.board {:style {:position "relative"
                          :width (str sx "px")
                          :height (str sy "px")

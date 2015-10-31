@@ -11,22 +11,26 @@
        :cljs [cljs.test :refer-macros [deftest testing is run-tests]])))
 
 (deftest set-camera-test
-  (let [game (-> (game/create 9 9)
+  (let [game (-> (game/create 8 8)
                  (camera/set-camera (coord/create 0 0)))]
     (is (game/camera game))
     (is (= (coord/create 0 0) (:left (game/camera game))))
-    (is (= (coord/create 8 8) (:right (game/camera game))))))
+    (is (= (coord/create 7 7) (:right (game/camera game))))))
 
 (defn- verify
   "Verifies an assertion on camera movement"
-  [[cx cy] [fx fy] [[lx ly] [rx ry]]]
-  (let [game (-> (game/create 9 9)
-                 (camera/set-camera (coord/create cx cy))
-                 (game/register (trader/create (coord/create fx fy))))
-        camera-position (camera/process game)]
-    (is (= (coord/create lx ly) (:left camera-position)))
-    (is (= (coord/create rx ry) (:right camera-position)))))
+  [msg [cx cy] [fx fy] [[lx ly] [rx ry]]]
+  (testing msg
+    (let [game (-> (game/create 8 8)
+                   (camera/set-camera (coord/create cx cy))
+                   (game/register (trader/create (coord/create fx fy))))
+          camera-position (camera/process game)]
+      (is (= (coord/create lx ly) (:left camera-position)))
+      (is (= (coord/create rx ry) (:right camera-position))))))
 
 (deftest camera-process-test
-  (verify [0 0] [1 1] [[0 0] [8 8]]))
+  (verify "on the top left, no need to move"
+          [0 0] [1 1] [[0 0] [7 7]])
+  (verify "on the top left, needs to move 1 to left"
+          [1 0] [3 1] [[0 0] [7 7]]))
 

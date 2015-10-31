@@ -6,23 +6,29 @@
             [wwtrader.models.trader :as trader]
             [wwtrader.models.game :as game]))
 
+(def margin 3)
+
 (defn width
   "Getst he width of the camera view"
   [game]
-  9)
+  8)
 
 (defn height
   "Getst he height of the camera view"
   [game]
-  9)
+  8)
+
+(defn init-camera
+  "Creates a new camera based on left point"
+  [game left]
+  {:left left
+   :right (coord/create (+ (- (width game) 1) (coord/x left))
+                        (+ (- (height game) 1) (coord/y left)))})
 
 (defn set-camera
   "Sets a new camera given the left top point"
   [game left]
-  (game/camera game
-    {:left left
-     :right (coord/create (+ (- (width game) 1) (coord/x left))
-                          (+ (- (height game) 1) (coord/y left)))}))
+  (game/camera game (init-camera game left)))
 
 (defn focus-element
   "Given a game, returns the element to focus the camera"
@@ -31,8 +37,14 @@
 
 (defn move-camera
   "Given a camera and a direction, moves the camera"
-  [camera dir]
-  camera)
+  [game camera [dx dy]]
+  (let [left (:left camera)
+        x (+ (coord/x left) dx)
+        y (+ (coord/y left) dy)]
+    (cond
+      (< x 0) camera
+      (< y 0) camera
+      :else (init-camera game (coord/create x y)))))
 
 (defn process
   "Gets the positions of the current camera"
@@ -49,9 +61,9 @@
         d-left-y (- (coord/x focus-coord) (coord/x camera-left))]
 
     (cond
-      (and (< d-left-x 3) (>= d-left-x 0))
-        (move-camera previous-camera [-1 0])
-      (and (< d-left-y 3) (>= d-left-y 0))
-        (move-camera previous-camera [0 -1])
+      (< d-left-x margin)
+        (move-camera game previous-camera [-1 0])
+      (< d-left-y margin)
+        (move-camera game previous-camera [0 -1])
       :else
         previous-camera)))
