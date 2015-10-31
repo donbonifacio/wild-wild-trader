@@ -76,3 +76,15 @@
         (move-camera game previous-camera [0 1])
       :else
         previous-camera)))
+
+(defn update-game
+  "Updates the camera on the given game"
+  [game]
+  (assoc game :camera (process game)))
+
+(defn info
+  "Prints the camera info, in a simple format"
+  [camera]
+  (str (coord/x (:left camera)) ":" (coord/y (:left camera))
+       " -> "
+       (coord/x (:right camera)) ":" (coord/y (:right camera))))

@@ -210,6 +210,7 @@
     (if-let [action (game/player-action game)]
       [:li [:b "Player Action"] " " (pr-str action)]
       [:li [:b "Player Action"] " None"])
+    [:li [:b "Camera"] (pr-str (camera/info (:camera game)))]
     [:li [:b "Result"] " " (pr-str (dissoc result :game))]
     ]
    [:h3 {:style {:margin 0}} "Elements"]

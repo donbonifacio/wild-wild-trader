@@ -3,6 +3,7 @@
   "Runs the game and all the elements, turn by turn, until the
   game is over"
   (:require [wwtrader.models.game :as game]
+            [wwtrader.camera :as camera]
             [wwtrader.models.element :as element]))
 
 (defn- element-turn
@@ -37,7 +38,8 @@
   [game]
   (let [elements (turn-elements game)
         trader (take 1 elements)]
-    (process-elements-turn game trader)))
+    (-> (process-elements-turn game trader)
+        (update :game camera/update-game))))
 
 (defn process-cpu-turn
   "Processes the cpu element's turn"

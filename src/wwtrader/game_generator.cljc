@@ -2,6 +2,7 @@
   wwtrader.game-generator
   "Generates random games"
   (:require [wwtrader.models.element :as e]
+            [wwtrader.camera :as camera]
             [wwtrader.models.trader :as trader]
             [wwtrader.models.god :as god]
             [wwtrader.models.bandit :as bandit]
@@ -17,6 +18,7 @@
   "Generates a random game"
   []
   (-> (game/create 8 8)
+      (camera/set-camera coord/c0-0)
       (game/register (god/create))
       (game/register (visibility-obstacle/create coord/c4-5 :water))
       (game/register (visibility-obstacle/create coord/c5-5 :water))
