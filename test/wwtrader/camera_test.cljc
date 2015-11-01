@@ -30,6 +30,7 @@
       (is (= (coord/create rx ry) (:right camera-position))))))
 
 (deftest camera-process-test
+  ;(comment
   (verify "on the top left, no need to move"
           [0 0] [1 1] action/left [[0 0] [7 7]])
   (verify "on the top left, needs to move 1 to left"
@@ -42,5 +43,7 @@
           [0 0] [4 5] action/down [[0 1] [7 8]])
   (verify "need to move right"
           [0 0] [5 3] action/right [[1 0] [8 7]])
+  (verify "on the top right, no need to move"
+          [16 0] [22 3] action/right [[16 0] [23 7]])
   )
 

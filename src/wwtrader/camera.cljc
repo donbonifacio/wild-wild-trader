@@ -5,6 +5,7 @@
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.action :as action]
             [wwtrader.models.trader :as trader]
+            [wwtrader.models.county :as county]
             [wwtrader.models.game :as game]))
 
 (def margin 3)
@@ -40,11 +41,14 @@
   "Given a camera and a direction, moves the camera"
   [game camera [dx dy]]
   (let [left (:left camera)
+        county (game/county game)
         x (+ (coord/x left) dx)
-        y (+ (coord/y left) dy)]
+        y (+ (coord/y left) dy)
+        end-x (+ x (width game))]
     (cond
       (< x 0) camera
       (< y 0) camera
+      (>= end-x (county/width county)) camera
       :else (init-camera game (coord/create x y)))))
 
 (defn process
