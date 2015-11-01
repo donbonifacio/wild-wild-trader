@@ -49,6 +49,10 @@
                    :background-color (cond
                                        (instance? trader/elem-type elem) "transparent"
                                        (instance? decoy/elem-type elem) "green"
+                                       (instance? market/Market elem) "aqua"
+                                       (instance? supply-farm/SupplyFarm elem) "pink"
+                                       (instance? resource-generator/ResourceGenerator elem) "deeppink"
+                                       (instance? visibility-obstacle/ObstacleWithLineOfSight  elem) "blue"
                                        (enemy/enemy? elem) "red"
                                        :else "black")
                    :left (str (* x percent) "%")
@@ -107,8 +111,8 @@
 (defmethod render-element market/Market [context market]
   (raw-render context market
               {:border "1px solid"
-               :color "blue"
-               :border-color "blue"}
+               :color "aqua"
+               :border-color "aqua"}
               "Market"))
 
 (defmethod render-element desperado/Desperado [context desperado]
@@ -179,7 +183,7 @@
 
 (defmethod render-element resource-generator/ResourceGenerator [context generator]
   (let [available? (resource-generator/available? generator)
-        color (if available? "green" "black")]
+        color (if available? "deeppink" "black")]
     (raw-render context generator
                 {:border "1px solid"
                  :color color
