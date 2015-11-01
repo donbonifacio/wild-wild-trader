@@ -8,6 +8,8 @@
 (defprotocol Enemy
   (add-damage [enemy game damage] "Adds damage to the enemy"))
 
+(def elem-type Enemy)
+
 (defn enemy?
   "True if the element is enemy"
   [elem]

@@ -8,6 +8,7 @@
     [wwtrader.camera :as camera]
     [wwtrader.models.game :as game]
     [wwtrader.models.bandit :as bandit]
+    [wwtrader.models.enemy :as enemy]
     [wwtrader.models.desperado :as desperado]
     [wwtrader.models.apache :as apache]
     [wwtrader.models.decoy :as decoy]
@@ -26,10 +27,33 @@
     [wwtrader.models.county :as county]))
 
 (def cell-size 50)
+(def minimap-cell-size 10)
 
 (def processing?
   "True if the engine is working and no events should be recorded"
   (atom false))
+
+(defn- render-mini-element
+  "Renders the given element in html"
+  [context elem]
+  (let [pos (element/coord elem)
+        percent 4.16
+        id (element/id elem)
+        x (coord/x pos)
+        y (+ (coord/y pos) 1)]
+    [:div {:key id
+           :id id
+           :style {:position "absolute"
+                   :width minimap-cell-size
+                   :height minimap-cell-size
+                   :background-color (cond
+                                       (instance? trader/elem-type elem) "transparent"
+                                       (instance? decoy/elem-type elem) "green"
+                                       (enemy/enemy? elem) "red"
+                                       :else "black")
+                   :left (str (* x percent) "%")
+                   :bottom (str (* (- 24 y) percent) "%")
+                   :border "1px dotted"}}]))
 
 (defmulti render-element
   "Renders the given element in HTML"
@@ -60,7 +84,6 @@
                             :border "1px dotted"}
                            specific-style)}
      specific-content])))
-
 
 (defmethod render-element god/God [context god]
   (comment "No render"))
@@ -208,6 +231,20 @@
           (game-loop/turn-elements game))]
     ))
 
+(defn- minimap
+  "Renders the minimap"
+  [game]
+  (let [county (game/county game)
+        sx (* minimap-cell-size (county/width county))
+        sy (* minimap-cell-size (county/height county))
+        context {:game game}]
+    [:div.board {:style {:position "relative"
+                         :width (str sx "px")
+                         :height (str sy "px")
+                         :border "1px solid"}}
+     (map (partial render-mini-element context)
+          (game/elements game))]
+    ))
 (defn debug-info
   "Renders debug-info"
   [result game]
@@ -263,5 +300,6 @@
     [:div
      [:div
       [:div {:style {:float "left"}} (board game)]
-      [:div {:style {:float "left" :margin-left "10px"}} (hud game)]]
+      [:div {:style {:float "left" :margin-left "10px"}} (hud game)]
+      [:div {:style {:float "left" :margin-left "10px"}} (minimap game)]]
      [:div {:style {:clear "both"}} (debug-info result game)]]))
