@@ -39,16 +39,18 @@
 
 (defn move-camera
   "Given a camera and a direction, moves the camera"
-  [game camera [dx dy]]
+  [game camera [dx dy] moved-x? moved-y?]
   (let [left (:left camera)
         county (game/county game)
         x (+ (coord/x left) dx)
         y (+ (coord/y left) dy)
-        end-x (+ x (width game))]
+        end-x (+ x (width game))
+        end-y (+ y (height game))]
     (cond
       (< x 0) camera
       (< y 0) camera
-      (>= end-x (county/width county)) camera
+      (and moved-x? (>= end-x (county/width county))) camera
+      (and moved-y? (>= end-y (county/height county))) camera
       :else (init-camera game (coord/create x y)))))
 
 (defn process
@@ -67,17 +69,20 @@
         d-left-x (- (coord/x focus-coord) (coord/x camera-left))
         d-left-y (- (coord/y focus-coord) (coord/y camera-left))
         d-right-x (- (coord/x camera-right) (coord/x focus-coord))
-        d-right-y (- (coord/y camera-right) (coord/y focus-coord))]
+        d-right-y (- (coord/y camera-right) (coord/y focus-coord))
+
+        moved-x? (action/moved-x? action)
+        moved-y? (action/moved-y? action)]
 
     (cond
-      (and (action/moved-x? action) (< d-left-x margin))
-        (move-camera game previous-camera [-1 0])
-      (and (action/moved-x? action) (< d-right-x margin))
-        (move-camera game previous-camera [1 0])
-      (and (action/moved-y? action) (< d-left-y margin))
-        (move-camera game previous-camera [0 -1])
-      (and (action/moved-y? action) (< d-right-y margin))
-        (move-camera game previous-camera [0 1])
+      (and moved-x? (< d-left-x margin))
+        (move-camera game previous-camera [-1 0] moved-x? moved-y?)
+      (and moved-x? (< d-right-x margin))
+        (move-camera game previous-camera [1 0] moved-x? moved-y?)
+      (and moved-y? (< d-left-y margin))
+        (move-camera game previous-camera [0 -1] moved-x? moved-y?)
+      (and moved-y? (< d-right-y margin))
+        (move-camera game previous-camera [0 1] moved-x? moved-y?)
       :else
         previous-camera)))
 
