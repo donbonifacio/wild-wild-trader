@@ -17,7 +17,7 @@
 (defn random
   "Generates a random game"
   []
-  (-> (game/create 8 8)
+  (-> (game/create 24 24)
       (camera/set-camera coord/c0-0)
       (game/register (god/create))
       (game/register (visibility-obstacle/create coord/c4-5 :water))

@@ -39,20 +39,27 @@
   "Renders an element"
   [context elem specific-style specific-content]
   (let [pos (element/coord elem)
+        camera-left (-> context :game game/camera :left)
+        camera-right (-> context :game game/camera :right)
+        visible? (and (>= (coord/x pos) (coord/x camera-left))
+                      (>= (coord/y pos) (coord/y camera-left))
+                      (<= (coord/x pos) (coord/x camera-right))
+                      (<= (coord/y pos) (coord/y camera-right)))
         id (element/id elem)
-        x (coord/x pos)
-        y (+ (coord/y pos) 1)]
-    [:div {:key id
-           :id id
-           :style (merge {:position "absolute"
-                          :transition "0.1s"
-                          :width cell-size
-                          :height cell-size
-                          :left (str (* x 12.5) "%")
-                          :bottom (str (* (- 8 y) 12.5) "%")
-                          :border "1px dotted"}
-                         specific-style)}
-     specific-content]))
+        x (- (coord/x pos) (coord/x camera-left))
+        y (+ (- (coord/y pos) (coord/y camera-left)) 1)]
+    (when visible?
+      [:div {:key id
+             :id id
+             :style (merge {:position "absolute"
+                            :transition "0.1s"
+                            :width cell-size
+                            :height cell-size
+                            :left (str (* x 12.5) "%")
+                            :bottom (str (* (- 8 y) 12.5) "%")
+                            :border "1px dotted"}
+                           specific-style)}
+     specific-content])))
 
 
 (defmethod render-element god/God [context god]
