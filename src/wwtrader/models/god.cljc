@@ -48,7 +48,6 @@
                            (game/inc-turn)
                            (add-random-enemies))})
 
-
 (defrecord God [id]
   e/Element
   (id [elem] id)

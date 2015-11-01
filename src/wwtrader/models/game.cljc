@@ -128,13 +128,22 @@
             []
             possible)))
 
+(defn- consider-camera
+  "Given a random coordinate, will ajust it if a camera is present"
+  [coord game]
+  (if-let [camera (:camera game)]
+    (let [{:keys [x y]} (:left camera)]
+      (coord/offset coord [x y]))
+    coord))
+
 (defn random-empty-coord
   "Gets a coordinate that it's empty"
   [game]
   (let [county (county game)
-        w (county/width county)
-        h (county/height county)
-        lucky (coord/create (rand-int h) (rand-int w))]
+        w 8
+        h 8
+        lucky (-> (coord/create (rand-int h) (rand-int w))
+                  (consider-camera game))]
     (if (not (at game lucky))
       lucky
       (recur game))))

@@ -51,13 +51,14 @@
                                        (instance? decoy/elem-type elem) "green"
                                        (instance? market/Market elem) "aqua"
                                        (instance? supply-farm/SupplyFarm elem) "pink"
+                                       (instance? god/God elem) "white"
                                        (instance? resource-generator/ResourceGenerator elem) "deeppink"
                                        (instance? visibility-obstacle/ObstacleWithLineOfSight  elem) "blue"
                                        (enemy/enemy? elem) "red"
                                        :else "black")
                    :left (str (* x percent) "%")
                    :bottom (str (* (- 24 y) percent) "%")
-                   :border "1px dotted"}}]))
+                   :border "none"}}]))
 
 (defmulti render-element
   "Renders the given element in HTML"
