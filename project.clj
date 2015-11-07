@@ -19,6 +19,7 @@
              :cljs-dev {
 
                         :plugins [[lein-cljsbuild "1.1.1"]
+                                  [org.clojure/clojurescript "1.7.170"]
                                   [lein-figwheel "0.5.0-SNAPSHOT"]]
 
                         :figwheel {:css-dirs ["resources/public/css"]}
