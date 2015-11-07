@@ -47,7 +47,7 @@
                    :width minimap-cell-size
                    :height minimap-cell-size
                    :background-color (cond
-                                       (instance? trader/elem-type elem) "transparent"
+                                       (instance? trader/elem-type elem) "lightcoral"
                                        (instance? decoy/elem-type elem) "green"
                                        (instance? market/Market elem) "aqua"
                                        (instance? supply-farm/SupplyFarm elem) "pink"
@@ -100,7 +100,7 @@
   (raw-render context obstacle {:background-color "blue" :color "blue"} ""))
 
 (defmethod render-element trader/Trader [context trader]
-  (raw-render context trader {}
+  (raw-render context trader {:color "lightcoral"}
     [:div "Trader"
      (let [damage (trader/damage-taken trader)]
        (when (not= 0 damage)
