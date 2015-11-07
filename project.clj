@@ -3,11 +3,11 @@
   :url "https://github.com/donbonifacio/wild-wild-trader"
   :min-lein-version "2.5.1"
   :dependencies [[org.clojure/clojure "1.8.0-beta2"]
-                 [org.clojure/clojurescript "1.7.122"]
-                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [org.clojure/tools.nrepl "0.2.11"]
+                 [org.clojure/clojurescript "1.7.170"]
+                 [org.clojure/core.async "0.2.371"]
+                 [org.clojure/tools.nrepl "0.2.12"]
                  [reagent "0.5.1"]
-                 [mvxcvi/puget "0.8.1"]
+                 [mvxcvi/puget "1.0.0"]
                  [secretary "1.2.3"]]
 
   :profiles {
@@ -18,8 +18,8 @@
 
              :cljs-dev {
 
-                        :plugins [[lein-cljsbuild "1.0.6"]
-                                  [lein-figwheel "0.3.7"]]
+                        :plugins [[lein-cljsbuild "1.1.1"]
+                                  [lein-figwheel "0.5.0-SNAPSHOT"]]
 
                         :figwheel {:css-dirs ["resources/public/css"]}
 
