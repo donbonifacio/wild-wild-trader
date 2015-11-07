@@ -22,6 +22,14 @@
         :let [left [(* sx 3) (* sy 3)]]]
     left))
 
+(defn random-element
+  "Gets a random element for the scenary"
+  [coord]
+  (let [lucky (rand-int 100)]
+    (cond
+      (>= lucky 80) (visibility-obstacle/create coord :water)
+      :else (obstacle/create coord :mountain))))
+
 (defn populate-windows
   "Populates a window with elements"
   [game [sx sy]]
@@ -32,10 +40,11 @@
         game
         (let [x (+ sx (rand-int 3))
               y (+ sy (rand-int 3))
-              lucky (coord/create x y)]
+              lucky (coord/create x y)
+              lucky-elem (random-element lucky)]
           (if (not (game/at game lucky))
             (-> game
-                (game/register (obstacle/create lucky :mountain))
+                (game/register lucky-elem)
                 (recur (dec counter)))
             (recur game counter)))))))
 
