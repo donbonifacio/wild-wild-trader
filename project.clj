@@ -39,7 +39,8 @@
                                          :source-map-timestamp true}}]}}
 
              :cljs-node {
-                         :plugins [[lein-cljsbuild "1.0.6"]]
+                         :plugins [[lein-cljsbuild "1.1.1"]
+                                   [org.clojure/clojurescript "1.7.170"]]
                          :cljsbuild {
                                      :test-commands {"test" ["node"  "build/test/out-node.js"]}
                                      :builds [{:id "test"
