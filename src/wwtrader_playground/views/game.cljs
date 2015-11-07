@@ -6,6 +6,7 @@
     [wwtrader-playground.state :as state]
     [wwtrader.game-loop :as game-loop]
     [wwtrader.camera :as camera]
+    [wwtrader.game-generator :as game-generator]
     [wwtrader.models.game :as game]
     [wwtrader.models.bandit :as bandit]
     [wwtrader.models.enemy :as enemy]
@@ -307,4 +308,8 @@
       [:div {:style {:float "left"}} (board game)]
       [:div {:style {:float "left" :margin-left "10px"}} (hud game)]
       [:div {:style {:float "left" :margin-left "10px"}} (minimap game)]]
-     [:div {:style {:clear "both"}} (debug-info result game)]]))
+     [:div {:style {:clear "both"}} (debug-info result game)]
+     [:div [:h2 "minimaps"]
+      (for [n (range 9)]
+        [:div {:style {:float "left" :margin "10px"}}
+          (minimap (game-generator/random))])]]))
