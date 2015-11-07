@@ -11,6 +11,7 @@
             [wwtrader.models.god-test]
             [wwtrader.game-loop-test]
             [wwtrader.camera-test]
+            [wwtrader.game-generator-test]
             [wwtrader.models.market-test]
             [wwtrader.models.obstacle-test]
             [wwtrader.models.obstacle-with-line-of-sight-test]

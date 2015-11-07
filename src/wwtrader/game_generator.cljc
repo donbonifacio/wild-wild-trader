@@ -14,20 +14,45 @@
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
 
-(defn random
-  "Generates a random game"
+(defn get-small-windows
+  "Returns the start point for all 3x3 windows on the map"
+  []
+  (for [sx (range 8)
+        sy (range 8)
+        :let [left [(* sx 3) (* sy 3)]]]
+    left))
+
+(defn populate-windows
+  "Populates a window with elements"
+  [game [sx sy]]
+  (let [elements-to-generate (rand-int 4)]
+    (loop [game game
+           counter elements-to-generate]
+      (if (<= counter 0)
+        game
+        (let [x (+ sx (rand-int 3))
+              y (+ sy (rand-int 3))
+              lucky (coord/create x y)]
+          (if (not (game/at game lucky))
+            (-> game
+                (game/register (obstacle/create lucky :mountain))
+                (recur (dec counter)))
+            (recur game counter)))))))
+
+(defn empty-game
+  "Generates an empty game"
   []
   (-> (game/create 24 24)
       (camera/set-camera coord/c0-0)
-      (game/register (god/create))
-      (game/register (visibility-obstacle/create coord/c4-5 :water))
-      (game/register (visibility-obstacle/create coord/c5-5 :water))
-      (game/register (visibility-obstacle/create coord/c6-5 :water))
-      (game/register (obstacle/create coord/c2-3 :mountain))
-      (game/register (obstacle/create coord/c2-4 :mountain))
-      (game/register (obstacle/create coord/c6-1 :mountain))
-      (game/register (market/create coord/c5-1))
-      (game/register (supply-farm/create coord/c1-6))
-      (game/register (resource-generator/create coord/c7-7))
-      (game/register (trader/create coord/c2-2))
-      (god/add-random-enemy)))
+      (game/register (god/create))))
+
+(defn game-with-random-scenary
+  "Generates a game with random scenary"
+  []
+  (reduce populate-windows (empty-game) (get-small-windows)))
+
+(defn random
+  "Generates a random game"
+  []
+  (let [game (game-with-random-scenary)]
+    (game/register game (trader/create (game/random-empty-coord game)))))
