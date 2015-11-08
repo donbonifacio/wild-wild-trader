@@ -54,9 +54,9 @@
                                        (instance? supply-farm/SupplyFarm elem) "pink"
                                        (instance? god/God elem) "white"
                                        (instance? resource-generator/ResourceGenerator elem) "deeppink"
-                                       (instance? visibility-obstacle/ObstacleWithLineOfSight  elem) "blue"
+                                       (instance? visibility-obstacle/ObstacleWithLineOfSight  elem) "LightSkyBlue"
                                        (enemy/enemy? elem) "red"
-                                       :else "black")
+                                       :else "Peru")
                    :left (str (* x percent) "%")
                    :bottom (str (* (- 24 y) percent) "%")
                    :border "none"}}]))
@@ -95,10 +95,10 @@
   (comment "No render"))
 
 (defmethod render-element obstacle/Obstacle [context obstacle]
-  (raw-render context obstacle {:background-color "black"} ""))
+  (raw-render context obstacle {:background-color "Peru" :color "Peru"} ""))
 
 (defmethod render-element visibility-obstacle/ObstacleWithLineOfSight [context obstacle]
-  (raw-render context obstacle {:background-color "blue" :color "blue"} ""))
+  (raw-render context obstacle {:background-color "LightSkyBlue" :color "LightSkyBlue"} ""))
 
 (defmethod render-element trader/Trader [context trader]
   (raw-render context trader {:color "lightcoral"}
@@ -230,6 +230,7 @@
         sy (* cell-size (camera/height game))
         context {:game game}]
     [:div.board {:style {:position "relative"
+                         :background-color "Bisque"
                          :width (str sx "px")
                          :height (str sy "px")
                          :border "1px solid"}}
@@ -245,6 +246,7 @@
         sy (* minimap-cell-size (county/height county))
         context {:game game}]
     [:div.board {:style {:position "relative"
+                         :background-color "Bisque"
                          :width (str sx "px")
                          :height (str sy "px")
                          :border "1px solid"}}
@@ -309,7 +311,7 @@
       [:div {:style {:float "left" :margin-left "10px"}} (hud game)]
       [:div {:style {:float "left" :margin-left "10px"}} (minimap game)]]
      [:div {:style {:clear "both"}} (debug-info result game)]
-     [:div [:h2 "minimaps"]
+     #_[:div [:h2 "minimaps"]
       (for [n (range 9)]
         [:div {:style {:float "left" :margin "10px"}}
           (minimap (game-generator/random))])]]))
