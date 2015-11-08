@@ -62,8 +62,10 @@
 
 (defn create
   "Creates a new ResourceGenerator"
-  [coord]
-  (->ResourceGenerator (gensym) coord "gem" true 3 (random-generation-time)))
+  ([coord]
+   (create coord "gem"))
+  ([coord resource]
+   (->ResourceGenerator (gensym) coord resource true 3 (random-generation-time))))
 
 (defn resource
   "Gets the resource that this generator is processing"

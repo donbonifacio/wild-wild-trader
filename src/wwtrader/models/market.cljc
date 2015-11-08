@@ -35,8 +35,10 @@
 
 (defn create
   "Creates a new Market"
-  [coord]
-  (->Market (gensym) coord "gem"))
+  ([coord]
+   (create coord "gem"))
+  ([coord resource]
+   (->Market (gensym) coord resource)))
 
 (defn resource
   "Gets the resource that this generator is buying"

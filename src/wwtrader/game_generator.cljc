@@ -66,12 +66,12 @@
   (-> game
       ;; left city
       (game/register (supply-farm/create coord/c1-1))
-      (game/register (market/create coord/c2-1))
-      (game/register (resource-generator/create coord/c3-1))
+      (game/register (market/create coord/c2-1 "gold"))
+      (game/register (resource-generator/create coord/c3-1 "silver"))
       ;; bottom city
       (game/register (supply-farm/create (coord/create 22 19)))
-      (game/register (market/create (coord/create 22 20)))
-      (game/register (resource-generator/create (coord/create 22 21)))))
+      (game/register (market/create (coord/create 22 20) "silver"))
+      (game/register (resource-generator/create (coord/create 22 21) "gold"))))
 
 (defn random
   "Generates a random game"
