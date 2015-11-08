@@ -60,8 +60,23 @@
   []
   (reduce populate-windows (empty-game) (get-small-windows)))
 
+(defn add-cities
+  "Adds the cities to the game"
+  [game]
+  (-> game
+      ;; left city
+      (game/register (supply-farm/create coord/c1-1))
+      (game/register (market/create coord/c2-1))
+      (game/register (resource-generator/create coord/c3-1))
+      ;; bottom city
+      (game/register (supply-farm/create (coord/create 22 19)))
+      (game/register (market/create (coord/create 22 20)))
+      (game/register (resource-generator/create (coord/create 22 21)))))
+
 (defn random
   "Generates a random game"
   []
-  (let [game (game-with-random-scenary)]
-    (game/register game (trader/create (game/random-empty-coord game)))))
+  (let [game (-> (game-with-random-scenary)
+                 (add-cities))
+        start-coord coord/c3-3 #_(game/random-empty-coord game)]
+    (game/register game (trader/create start-coord))))
