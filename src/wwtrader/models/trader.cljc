@@ -96,7 +96,8 @@
 (defn- default-skills
   "Configures the default skills"
   []
-  {:take-supplies action/take-supplies})
+  {:take-supplies action/take-supplies
+   :heal action/heal})
 
 (defn create
   "Creates a new Trader"
@@ -160,6 +161,11 @@
   "Gets the possible skills for this trader"
   [trader]
   (:skills trader))
+
+(defn add-skill
+  "Registers a new skill"
+  [trader skill]
+  (update-in trader [:skills] assoc (:action-type skill) skill))
 
 (defn opaque?
   "True if the trader can't see through the element"
