@@ -10,7 +10,7 @@
 (def down (map->Action {:action-type :move :args [0 1]}))
 
 (def take-supplies (map->Action {:action-type :take-supplies}))
-(def heal (map->Action {:action-type :heal :energy 80}))
+(def heal (map->Action {:action-type :heal :args {:energy 80}}))
 
 (defn moved-x?
   "True if the given action translated to moving on x"

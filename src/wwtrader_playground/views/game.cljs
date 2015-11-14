@@ -13,6 +13,7 @@
     [wwtrader.models.desperado :as desperado]
     [wwtrader.models.apache :as apache]
     [wwtrader.models.decoy :as decoy]
+    [wwtrader.models.skill-giver :as skill-giver]
     [wwtrader.models.burglar :as burglar]
     [wwtrader.models.action :as action]
     [wwtrader.models.coordinate :as coord]
@@ -50,6 +51,7 @@
                    :background-color (cond
                                        (instance? trader/elem-type elem) "lightcoral"
                                        (instance? decoy/elem-type elem) "green"
+                                       (instance? skill-giver/elem-type elem) "Crimson"
                                        (instance? market/Market elem) "aqua"
                                        (instance? supply-farm/SupplyFarm elem) "pink"
                                        (instance? god/God elem) "white"
@@ -136,6 +138,15 @@
                  :font-size "12px"
                  :border-color color}
                 [:div "Decoy" [:br] (t/target-value decoy) "$"])))
+
+(defmethod render-element skill-giver/elem-type [context elem]
+  (let [color "Crimson"]
+    (raw-render context elem
+                {:border "1px solid"
+                 :color color
+                 :font-size "12px"
+                 :border-color color}
+                [:div "Skill" [:br] (name (get-in elem [:skill :action-type]))])))
 
 (defmethod render-element burglar/Burglar [context burglar]
   (let [color "gray"]

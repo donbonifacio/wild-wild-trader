@@ -96,8 +96,7 @@
 (defn- default-skills
   "Configures the default skills"
   []
-  {:take-supplies action/take-supplies
-   :heal action/heal})
+  {:take-supplies action/take-supplies})
 
 (defn create
   "Creates a new Trader"

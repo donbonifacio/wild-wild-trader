@@ -5,10 +5,12 @@
             [wwtrader.camera :as camera]
             [wwtrader.models.trader :as trader]
             [wwtrader.models.god :as god]
+            [wwtrader.models.action :as action]
             [wwtrader.models.bandit :as bandit]
             [wwtrader.models.market :as market]
             [wwtrader.models.resource-generator :as resource-generator]
             [wwtrader.models.supply-farm :as supply-farm]
+            [wwtrader.models.skill-giver :as skill-giver]
             [wwtrader.models.obstacle :as obstacle]
             [wwtrader.models.obstacle-with-line-of-sight :as visibility-obstacle]
             [wwtrader.models.coordinate :as coord]
@@ -73,10 +75,17 @@
       (game/register (market/create (coord/create 22 20) "silver"))
       (game/register (resource-generator/create (coord/create 22 21) "gold"))))
 
+(defn add-skill-givers
+  "Adds the skill givers to the game"
+  [game]
+  (-> game
+      (game/register (skill-giver/create (game/random-empty-coord game) action/heal))))
+
 (defn random
   "Generates a random game"
   []
   (let [game (-> (game-with-random-scenary)
-                 (add-cities))
+                 (add-cities)
+                 (add-skill-givers))
         start-coord coord/c3-3 #_(game/random-empty-coord game)]
     (game/register game (trader/create start-coord))))
