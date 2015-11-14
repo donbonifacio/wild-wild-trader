@@ -228,3 +228,13 @@
       {:success true :game (game/swap-element game elem (-> (energy elem 100)
                                                             (remove-cargo-once "supplies")))}))
 
+(defmethod process-action :heal [action trader game]
+  (let [required-energy (get-in action [:args :energy])]
+    (cond
+      (>= required-energy (energy trader))
+        {:success false :error :no-energy :game game}
+      :else
+        {:success true :game (game/swap-element game trader (-> trader
+                                                                (take-energy required-energy)
+                                                                (hitpoints 3)))})))
+
