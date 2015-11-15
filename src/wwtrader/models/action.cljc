@@ -11,6 +11,7 @@
 
 (def take-supplies (map->Action {:action-type :take-supplies}))
 (def heal (map->Action {:action-type :heal :args {:energy 80}}))
+(def sleep (map->Action {:action-type :sleep :args {:energy 20}}))
 
 (defn moved-x?
   "True if the given action translated to moving on x"

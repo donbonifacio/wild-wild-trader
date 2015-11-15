@@ -15,7 +15,6 @@
   (coord [elem coord] (assoc elem :coord coord))
   (process-turn [elem result] {:success true :game (:game result)})
   (interact-with [elem trader game]
-    (println (trader/add-skill trader skill))
     {:success true :game (-> (game/purge game elem)
                              (game/swap-element trader (trader/add-skill trader skill)))}))
 
