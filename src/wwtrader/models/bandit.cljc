@@ -12,9 +12,13 @@
 (defn- resolve-destination
   "Finds the next coordinate to move to"
   [game trader elem]
+  {:post [(not (nil? %))]}
   (let [possible (game/possible-destinations game elem)
-        sorted (coord/sort-by-distance (e/coord trader) possible)]
-    (first sorted)))
+        sorted (coord/sort-by-distance (e/coord trader) possible)
+        lucky (first sorted)]
+    (if lucky
+      lucky
+      (e/coord elem))))
 
 (defn move
   "Moves the bandit"

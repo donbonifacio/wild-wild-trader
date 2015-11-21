@@ -53,7 +53,7 @@
   e/Element
   (id [elem] id)
   (priority [elem] 10000)
-  (coord [elem] nil)
+  (coord [elem] (coord/create -100 -100))
   (coord [elem coord] elem)
   (process-turn [elem game] (process elem game))
   (interact-with [elem other game] {:success true :game game}))
