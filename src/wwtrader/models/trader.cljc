@@ -233,7 +233,7 @@
   [action trader game f]
   (let [required-energy (get-in action [:args :energy])]
     (cond
-      (> 0 (hitpoints trader))
+      (>= 0 (hitpoints trader))
         {:success false :error :dead :game game}
       (>= required-energy (energy trader))
         {:success false :error :no-energy :game game}

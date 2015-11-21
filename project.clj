@@ -4,7 +4,7 @@
   :min-lein-version "2.5.1"
   :dependencies [[org.clojure/clojure "1.8.0-beta2"]
                  [org.clojure/clojurescript "1.7.170"]
-                 [org.clojure/core.async "0.2.371"]
+                 [org.clojure/core.async "0.2.374"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [reagent "0.5.1"]
                  [mvxcvi/puget "1.0.0"]
