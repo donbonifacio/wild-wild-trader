@@ -30,9 +30,10 @@
 (defn add-random-enemies
   "Adds several enemies"
   [game]
-  (let [turn (game/turn game)]
+  (let [turn (game/turn game)
+        trader (first (game/find-elements game trader/elem-type))]
     (if (= 0 (mod turn 10))
-      (loop [n 3 #_(/ turn 10)
+      (loop [n (+ 1 (count (trader/cargo trader)))
              game game]
         (if (<= n 0)
           game
