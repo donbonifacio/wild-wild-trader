@@ -1,6 +1,7 @@
 (ns wwtrader.models.game-test
   (:require
     [wwtrader.models.game :as game]
+    [wwtrader.game-generator :as game-generator]
     [wwtrader.models.coordinate :as coord]
     [wwtrader.models.trader :as trader]
     [wwtrader.models.decoy :as decoy]
@@ -44,3 +45,7 @@
     (let [game (game-builds/player-left-to decoy/create)
           target (game/find-target game)]
       (is (instance? decoy/elem-type target)))))
+
+(deftest game-at
+  (let [game (game-generator/random)]
+    (is (nil? (game/at game nil)))))

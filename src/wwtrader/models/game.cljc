@@ -60,10 +60,11 @@
 (defn at
   "Gets the element, if any, at the given coordinate"
   [game coord]
-  (-> game
-      :county
-      :elements
-      (get coord)))
+  (when coord
+    (-> game
+        :county
+        :elements
+        (get coord))))
 
 (defn player-action
   "Sets the player action on the current game"

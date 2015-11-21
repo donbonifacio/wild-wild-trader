@@ -318,6 +318,7 @@
     (. js/document (addEventListener "keydown" on-key-press))
     [:div
      [:div
+      [:div (pr-str (game/find-elements game god/God))]
       [:div {:style {:float "left"}} (board game)]
       [:div {:style {:float "left" :margin-left "10px"}} (hud game)]
       [:div {:style {:float "left" :margin-left "10px"}} (minimap game)]]
