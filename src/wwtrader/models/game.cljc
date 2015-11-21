@@ -55,6 +55,7 @@
   [game elem]
   (let [current-county (:county game)
         coord (e/coord elem)]
+    (assert coord (str "Trying to purge element without coordinate " (pr-str elem) (pr-str game)))
     (assoc game :county (county/purge current-county coord elem))))
 
 (defn at

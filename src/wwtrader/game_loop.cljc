@@ -9,7 +9,8 @@
 (defn- element-turn
   "Calls element turn"
   [result element]
-  (if-let [fresh-element (game/at (:game result) (element/coord element))]
+  (if-let [fresh-element (or (game/at (:game result) (element/coord element))
+                             element)]
     (let [result (element/process-turn fresh-element result)]
       (if (= false (:success result))
         (reduced result)
