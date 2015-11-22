@@ -79,6 +79,7 @@
   "Adds the skill givers to the game"
   [game]
   (-> game
+      (game/register (skill-giver/create (game/random-empty-coord game) action/decoy))
       (game/register (skill-giver/create (game/random-empty-coord game) action/sleep))
       (game/register (skill-giver/create (game/random-empty-coord game) action/heal))))
 

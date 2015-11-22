@@ -77,7 +77,7 @@
 
 (declare clear-cargo)
 
-(defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken attacked?]
+(defrecord Trader [id coord hitpoints cargo cargo-limit money energy skills damage-taken attacked? on-move-action]
   t/Target
   (target-value [elem] 1)
   (take-damage [elem other game]
@@ -101,7 +101,14 @@
 (defn create
   "Creates a new Trader"
   [coord]
-  (->Trader (gensym) coord 3 [] 9 5 100 (default-skills) 0 false))
+  (->Trader (gensym) coord 3 [] 9 5 100 (default-skills) 0 false nil))
+
+(defn on-move-action
+  "Sets an action that will be run when the trader moves"
+  ([trader]
+   (:on-move-action trader))
+  ([trader action]
+   (assoc trader :on-move-action action)))
 
 (defn cargo
   "Gets the trader's cargo"
@@ -248,3 +255,10 @@
 (defmethod process-action :sleep [action trader game]
   (run-action action trader game (fn [new-trader]
     {:success true :game (game/swap-element game trader new-trader)})))
+
+(defmethod process-action :decoy [action trader game]
+  (run-action action trader game (fn [new-trader]
+    {:success false
+     :message :on-move-action-stored
+     :game (game/swap-element game trader (-> new-trader
+                                              (on-move-action action)))})))

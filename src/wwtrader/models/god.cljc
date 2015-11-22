@@ -14,12 +14,11 @@
 (defn- random-enemy
   "Returns a random enemy type"
   []
-  (let [lucky (rand-int 5)]
+  (let [lucky (rand-int 4)]
     (case lucky
       0 desperado/create
       1 burglar/create
       2 apache/create
-      3 decoy/create
       bandit/create)))
 
 (defn add-random-enemy
