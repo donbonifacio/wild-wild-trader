@@ -8,6 +8,9 @@
             [wwtrader.models.enemy :as enemy]
             [wwtrader.models.game :as game]))
 
+(defmulti process-action (fn [action elem game] (:action-type action)))
+(defmulti process-move-action (fn [action elem game previous-coord] (:action-type action)))
+
 (defn- interact
   "Interacts with another element"
   [game elem new-coord]
@@ -45,11 +48,26 @@
   [trader]
   (:damage-taken trader))
 
+(defn on-move-action
+  "Sets an action that will be run when the trader moves"
+  ([trader]
+   (:on-move-action trader))
+  ([trader action]
+   (assoc trader :on-move-action action)))
+
+(defn- process-on-move-action
+  "Checks if the trader has an on-move-action and runs it"
+  [game trader previous-coord]
+  (if-let [action (on-move-action trader)]
+    (process-move-action action trader game previous-coord)
+    game))
+
 (defn- move-trader
   "Processes movement for the trader"
-  [trader new-coord]
-  (-> trader
-      (e/coord new-coord)))
+  [game trader new-coord]
+  (let [new-trader (e/coord trader new-coord)]
+    (-> (game/swap-element game trader new-trader)
+        (process-on-move-action new-trader (e/coord trader)))))
 
 (defn- cleanup
   "Resets trader info"
@@ -63,8 +81,6 @@
       (assoc result :game (-> game
                               (game/swap-element elem trader)))
       result)))
-
-(defmulti process-action (fn [action elem game] (:action-type action)))
 
 (defn- process
   "Processes the turn from given actions"
@@ -102,13 +118,6 @@
   "Creates a new Trader"
   [coord]
   (->Trader (gensym) coord 3 [] 9 5 100 (default-skills) 0 false nil))
-
-(defn on-move-action
-  "Sets an action that will be run when the trader moves"
-  ([trader]
-   (:on-move-action trader))
-  ([trader action]
-   (assoc trader :on-move-action action)))
 
 (defn cargo
   "Gets the trader's cargo"
@@ -225,7 +234,7 @@
       :else
         {:success true
          :pos new-coord
-         :game (game/swap-element game elem (move-trader elem new-coord))})))
+         :game (move-trader game elem new-coord)})))
 
 (defmethod process-action :take-supplies [action elem game]
   (cond
@@ -262,3 +271,7 @@
      :message :on-move-action-stored
      :game (game/swap-element game trader (-> new-trader
                                               (on-move-action action)))})))
+
+(defmethod process-move-action :decoy [action trader game previous-coord]
+  {:success true
+   :game game #_(game/register game (decoy/create previous-coord))})
