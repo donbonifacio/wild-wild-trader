@@ -206,18 +206,40 @@
                    (resource-generator/resource generator)
                    "Empty")])))
 
+(defn- queued-action?
+  "True if the given action is already queue for on-move"
+  [trader action]
+  (= (trader/on-move-action trader) action))
+
+(defn- build-result
+  "Builds a result based on a game and message"
+  [game msg]
+  {:game game :msg msg :success true})
+
+(defn remove-queued-action
+  "Removes the queued action for move"
+  [game trader]
+  (-> game
+      (game/swap-element trader (trader/clear-on-move-action trader))
+      (build-result :on-move-action-removed)
+      (state/set-page-data!)))
+
 (defn register-action!
   "Registers the player action"
   [action]
   (go
-    (let [game (-> (state/get-page-data) :game (game/player-action action))
-          trader-result (game-loop/process-trader-turn game)]
-      (state/set-page-data! trader-result)
-      (<! (timeout 100))
-      (when (:success trader-result)
-        (state/set-page-data! (game-loop/process-cpu-turn (:game trader-result)))
-        (<! (timeout 100)))
-      (reset! processing? false))))
+    (let [game (:game (state/get-page-data))
+          trader (game-loop/trader game)]
+      (if (queued-action? trader action)
+        (remove-queued-action game trader)
+        (let [game-with-action (game/player-action game action)
+              trader-result (game-loop/process-trader-turn game-with-action)]
+          (state/set-page-data! trader-result)
+          (<! (timeout 100))
+          (when (:success trader-result)
+            (state/set-page-data! (game-loop/process-cpu-turn (:game trader-result)))
+            (<! (timeout 100)))
+          (reset! processing? false))))))
 
 (defn on-key-press
   "Handles on key pressed"
@@ -303,7 +325,8 @@
      [:ul
       (map-indexed (fn [idx [k v]]
                      [:li {:key idx}
-                      [:button {:on-click (fn [] (register-action! v))} (name k)]])
+                      [:button {:on-click (fn [] (register-action! v))} (name k)]
+                      (when (queued-action? trader v) [:b "ON"])])
                    (trader/skills trader))]
      [:h6 "Cargo"]
      [:ul
@@ -318,7 +341,6 @@
     (. js/document (addEventListener "keydown" on-key-press))
     [:div
      [:div
-      [:div (pr-str (game/find-elements game god/God))]
       [:div {:style {:float "left"}} (board game)]
       [:div {:style {:float "left" :margin-left "10px"}} (hud game)]
       [:div {:style {:float "left" :margin-left "10px"}} (minimap game)]]

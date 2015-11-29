@@ -34,6 +34,13 @@
           {:game game}
           elements))
 
+(defn trader
+  "Gets the trader of the current game"
+  [game]
+  (->> (turn-elements game)
+       (take 1)
+       first))
+
 (defn process-trader-turn
   "Processes the trader's turn"
   [game]

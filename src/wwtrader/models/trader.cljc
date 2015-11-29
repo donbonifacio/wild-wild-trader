@@ -6,6 +6,7 @@
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.action :as action]
             [wwtrader.models.enemy :as enemy]
+            [wwtrader.models.decoy :as decoy]
             [wwtrader.models.game :as game]))
 
 (defmulti process-action (fn [action elem game] (:action-type action)))
@@ -54,6 +55,11 @@
    (:on-move-action trader))
   ([trader action]
    (assoc trader :on-move-action action)))
+
+(defn clear-on-move-action
+  "Removes on-move-action"
+  [trader]
+  (assoc trader :on-move-action nil))
 
 (defn- process-on-move-action
   "Checks if the trader has an on-move-action and runs it"
@@ -251,10 +257,22 @@
     (cond
       (>= 0 (hitpoints trader))
         {:success false :error :dead :game game}
-      (>= required-energy (energy trader))
+      (> required-energy (energy trader))
         {:success false :error :no-energy :game game}
       :else
         (f (take-energy trader required-energy)))))
+
+(defn verify-action
+  "Verify that an action can be queued"
+  [action trader game f]
+  (let [required-energy (get-in action [:args :energy])]
+    (cond
+      (>= 0 (hitpoints trader))
+        {:success false :error :dead :game game}
+      (> required-energy (energy trader))
+        {:success false :error :no-energy :game game}
+      :else
+        (f trader))))
 
 (defmethod process-action :heal [action trader game]
   (run-action action trader game (fn [trader]
@@ -266,12 +284,14 @@
     {:success true :game (game/swap-element game trader new-trader)})))
 
 (defmethod process-action :decoy [action trader game]
-  (run-action action trader game (fn [new-trader]
+  (verify-action action trader game (fn [new-trader]
     {:success false
      :message :on-move-action-stored
      :game (game/swap-element game trader (-> new-trader
                                               (on-move-action action)))})))
 
 (defmethod process-move-action :decoy [action trader game previous-coord]
-  {:success true
-   :game game #_(game/register game (decoy/create previous-coord))})
+  (run-action action trader game (fn [new-trader]
+    (-> game
+        (game/swap-element trader (clear-on-move-action new-trader))
+        (game/register (decoy/create previous-coord))))))

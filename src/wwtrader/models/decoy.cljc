@@ -3,9 +3,13 @@
   "Enemies target the decoy"
   (:require [wwtrader.models.element :as e]
             [wwtrader.models.target :as t]
-            [wwtrader.models.trader :as trader]
             [wwtrader.models.coordinate :as coord]
             [wwtrader.models.game :as game]))
+
+(defn give-money
+  "Gives money from trader"
+  [elem money]
+  (assoc elem :money (+ (:money elem) money)))
 
 (defrecord Decoy [id coord visual value]
   t/Target
@@ -20,7 +24,7 @@
   (process-turn [elem result] {:success true :game (:game result)})
   (interact-with [elem trader game]
     {:success true :game (-> (game/purge game elem)
-                             (game/swap-element trader (trader/give-money trader value)))}))
+                             (game/swap-element trader (give-money trader value)))}))
 
 (def elem-type Decoy)
 
