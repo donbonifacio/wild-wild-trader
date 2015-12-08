@@ -98,6 +98,11 @@
   [game elem-type]
   (filter #(instance? elem-type %) (elements game)))
 
+(defn filter-elements
+  "Finds elements that satisfy pred"
+  [game pred]
+  (filter pred (elements game)))
+
 (def element-value-sorter (comp - t/target-value))
 
 (defn find-target

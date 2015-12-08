@@ -5,6 +5,7 @@
             [wwtrader.models.trader :as trader]
             [wwtrader.models.bandit :as bandit]
             [wwtrader.models.desperado :as desperado]
+            [wwtrader.models.enemy :as enemy]
             [wwtrader.models.apache :as apache]
             [wwtrader.models.burglar :as burglar]
             [wwtrader.models.decoy :as decoy]
@@ -26,13 +27,22 @@
   [game]
   (game/register game ((random-enemy) (game/random-empty-coord game))))
 
+(defn enemies-to-spawn
+  "The number of enemies to spawn on the given game"
+  [game]
+  (let [trader (first (game/find-elements game trader/elem-type))
+        curr-enemies (count (game/filter-elements game #(satisfies? enemy/Enemy %)))
+        more-enemies (+ 1 (count (trader/cargo trader)))
+        to-generate (- more-enemies curr-enemies)]
+    to-generate
+    ))
+
 (defn add-random-enemies
   "Adds several enemies"
   [game]
-  (let [turn (game/turn game)
-        trader (first (game/find-elements game trader/elem-type))]
+  (let [turn (game/turn game)]
     (if (= 0 (mod turn 10))
-      (loop [n (+ 1 (count (trader/cargo trader)))
+      (loop [n (enemies-to-spawn game)
              game game]
         (if (<= n 0)
           game
