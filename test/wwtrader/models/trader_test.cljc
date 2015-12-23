@@ -35,3 +35,22 @@
         (is (:success result))
         (is (= coord/c2-1 (e/coord trader)))
         (is (not (trader/attacked? trader)))))))
+
+(deftest attack-bandit-consider-camera
+  (let [original-game (-> (game-builds/player-far-left-to bandit/create)
+                          (game/player-action action/right))
+        result (game-loop/process-trader-turn original-game)
+        game (:game result)
+        trader (first (game-loop/turn-elements game))]
+    (is (:success result))
+    (is (game/at game (coord/create 8 0)))
+    (is (not (trader/attacked? trader)))
+
+    (testing "on the next attack the enemy should be in range"
+      (let [result (game-loop/process-trader-turn game)
+            game (:game result)
+            trader (first (game-loop/turn-elements game))]
+        (is (:success result))
+        (is (trader/attacked? trader))
+        (is (:dead? (game/at game (coord/create 8 0))))
+        (is (trader/attacked? trader))))))

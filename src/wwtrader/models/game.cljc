@@ -135,6 +135,20 @@
             []
             possible)))
 
+(defn in-camera?
+  "True if the given coordinate in on the game's camera"
+  [game coord]
+  (when-let [camera (:camera game)]
+    (let [lx (-> camera :left :x)
+          rx (-> camera :right :x)
+          ly (-> camera :left :y)
+          ry (-> camera :right :y)
+          {:keys [x y]} coord]
+      (and (>= x lx)
+           (>= y ly)
+           (<= x rx)
+           (<= y ry)))))
+
 (defn- consider-camera
   "Given a random coordinate, will ajust it if a camera is present"
   [coord game]

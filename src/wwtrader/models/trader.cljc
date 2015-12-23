@@ -193,6 +193,11 @@
   [elem]
   (not (:can-see-over? elem)))
 
+(defn not-in-camera?
+  "True if the given coordinate is not on the game's current camera"
+  [game coord]
+  (not (game/in-camera? game coord)))
+
 (defn enemy-in-range
   "Gets an enemy in range to attack, if any"
   [action elem game]
@@ -202,6 +207,8 @@
            current-coord (coord/offset current-coord offset)]
       (let [current-element (game/at game current-coord)]
         (cond
+          (not-in-camera? game current-coord)
+            nil
           (enemy/enemy? current-element)
             current-element
           (and current-element (opaque? current-element))
