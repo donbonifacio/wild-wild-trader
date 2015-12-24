@@ -49,8 +49,8 @@
     (cond
       (< x 0) camera
       (< y 0) camera
-      (and moved-x? (>= end-x (county/width county))) camera
-      (and moved-y? (>= end-y (county/height county))) camera
+      (and moved-x? (> end-x (county/width county))) camera
+      (and moved-y? (> end-y (county/height county))) camera
       :else (init-camera game (coord/create x y)))))
 
 (defn process

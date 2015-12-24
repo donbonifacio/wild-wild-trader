@@ -47,5 +47,7 @@
           [16 0] [22 3] action/right [[16 0] [23 7]])
   (verify "on the bottom right, no need to move"
           [16 16] [17 21] action/down [[16 16] [23 23]])
+  (verify "bottom edge, needs to move down"
+          [0 15] [1 22] action/down [[0 16] [7 23]])
   )
 
