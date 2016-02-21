@@ -1,0 +1,2 @@
+;; Analyzed by ClojureScript 1.7.170
+{:name wwtrader-playground.routes, :doc nil, :excludes #{}, :use-macros nil, :require-macros {secretary secretary.core, secretary.core secretary.core}, :uses nil, :requires {reagent reagent.core, reagent.core reagent.core, secretary secretary.core, secretary.core secretary.core, game-generator wwtrader.game-generator, wwtrader.game-generator wwtrader.game-generator, state wwtrader-playground.state, wwtrader-playground.state wwtrader-playground.state}, :imports nil, :cljs.analyzer/constants {:seen #{:game}, :order [:game]}}
